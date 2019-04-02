@@ -235,7 +235,7 @@ inline void lcd_move_e() { _lcd_move_e(); }
 screenFunc_t _manual_move_func_ptr;
 
 void _goto_manual_move(const float scale) {
-  ui.defer_status_screen(true);
+  ui.defer_status_screen();
   move_menu_scale = scale;
   ui.goto_screen(_manual_move_func_ptr);
 }
@@ -335,7 +335,7 @@ void menu_move() {
   else
     MENU_ITEM(gcode, MSG_AUTO_HOME, PSTR("G28"));
 
-  #if ENABLED(SWITCHING_EXTRUDER) || ENABLED(SWITCHING_NOZZLE)
+  #if EITHER(SWITCHING_EXTRUDER, SWITCHING_NOZZLE)
 
     #if EXTRUDERS == 6
       switch (active_extruder) {
@@ -376,7 +376,7 @@ void menu_move() {
 
   #endif
 
-  #if ENABLED(SWITCHING_EXTRUDER) || ENABLED(SWITCHING_NOZZLE)
+  #if EITHER(SWITCHING_EXTRUDER, SWITCHING_NOZZLE)
 
     // Only the current...
     MENU_ITEM(submenu, MSG_MOVE_E, lcd_move_get_e_amount);

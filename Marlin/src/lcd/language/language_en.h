@@ -867,6 +867,15 @@
 #ifndef MSG_BLTOUCH_DEPLOY
   #define MSG_BLTOUCH_DEPLOY                  _UxGT("Deploy BLTouch")
 #endif
+#ifndef MSG_BLTOUCH_SW_MODE
+  #define MSG_BLTOUCH_SW_MODE                 _UxGT("SW Deploy BLTouch")
+#endif
+#ifndef MSG_BLTOUCH_5V_MODE
+  #define MSG_BLTOUCH_5V_MODE                 _UxGT("BLTouch 5V Mode")
+#endif
+#ifndef MSG_BLTOUCH_OD_MODE
+  #define MSG_BLTOUCH_OD_MODE                 _UxGT("BLTouch OD Mode")
+#endif
 #ifndef MSG_BLTOUCH_STOW
   #define MSG_BLTOUCH_STOW                    _UxGT("Stow BLTouch")
 #endif
@@ -1268,6 +1277,18 @@
 #ifndef MSG_END_Z
   #define MSG_END_Z                           _UxGT("  End Z")
 #endif
+#ifndef MSG_BRICKOUT
+  #define MSG_BRICKOUT                        _UxGT("Brickout")
+#endif
+#ifndef MSG_INVADERS
+  #define MSG_INVADERS                        _UxGT("Invaders")
+#endif
+#ifndef MSG_SNAKE
+  #define MSG_SNAKE                           _UxGT("Sn4k3")
+#endif
+#ifndef MSG_MAZE
+  #define MSG_MAZE                            _UxGT("Maze")
+#endif
 
 //
 // Filament Change screens show up to 3 lines on a 4-line display
@@ -1376,4 +1397,14 @@
 #endif
 #ifndef MSG_SERVICE_IN
   #define MSG_SERVICE_IN                      _UxGT(" in:")
+#endif
+
+#ifndef MSG_BACKLASH
+  #define MSG_BACKLASH                        _UxGT("Backlash")
+#endif
+#ifndef MSG_BACKLASH_CORRECTION
+  #define MSG_BACKLASH_CORRECTION             _UxGT("Correction")
+#endif
+#ifndef MSG_BACKLASH_SMOOTHING
+  #define MSG_BACKLASH_SMOOTHING              _UxGT("Smoothing")
 #endif
