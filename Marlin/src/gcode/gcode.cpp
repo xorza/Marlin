@@ -232,7 +232,8 @@ void GcodeSuite::process_parsed_command(
       case 28: G28(false); break;                                 // G28: Home all axes, one at a time
 
       #if HAS_LEVELING
-        case 29:                                                  // G29: Bed leveling calibration
+        case 29:
+        case 80:                                                  // G29: Bed leveling calibration
           #if ENABLED(G29_RETRY_AND_RECOVER)
             G29_with_retry();
           #else
