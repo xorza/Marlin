@@ -1628,10 +1628,10 @@
   #define X2_HYBRID_THRESHOLD    100
   #define Y_HYBRID_THRESHOLD     100
   #define Y2_HYBRID_THRESHOLD    100
-  #define Z_HYBRID_THRESHOLD       0
+  #define Z_HYBRID_THRESHOLD       3
   #define Z2_HYBRID_THRESHOLD      3
   #define Z3_HYBRID_THRESHOLD      3
-  #define E0_HYBRID_THRESHOLD      0
+  #define E0_HYBRID_THRESHOLD      5
   #define E1_HYBRID_THRESHOLD     30
   #define E2_HYBRID_THRESHOLD     30
   #define E3_HYBRID_THRESHOLD     30
@@ -1653,7 +1653,7 @@
    */
   #define SENSORLESS_HOMING // TMC2130 only
 
-  #if ENABLED(MONITOR_DRIVER_STATUS)
+  #if ENABLED(SENSORLESS_HOMING)
     #undef X_HOME_BUMP_MM
     #define X_HOME_BUMP_MM 0
     #undef Y_HOME_BUMP_MM
@@ -1669,8 +1669,8 @@
   //#define SENSORLESS_PROBING // TMC2130 only
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
-    #define X_STALL_SENSITIVITY  3
-    #define Y_STALL_SENSITIVITY  3
+    #define X_STALL_SENSITIVITY  2
+    #define Y_STALL_SENSITIVITY  2
     //#define Z_STALL_SENSITIVITY  8
   #endif
 
