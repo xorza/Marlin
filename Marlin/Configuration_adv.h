@@ -1561,7 +1561,7 @@
   #define TMC_USE_SW_SPI
   //#define TMC_SW_MOSI       -1
   //#define TMC_SW_MISO       -1
-  //#km,define TMC_SW_SCK        -1
+  //#define TMC_SW_SCK        -1
 
   /**
    * Software enable
