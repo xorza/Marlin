@@ -585,14 +585,14 @@
 //#define USE_ZMAX_PLUG
 
 // Enable pullup for all endstops to prevent a floating state
-//#define ENDSTOPPULLUPS
+#define ENDSTOPPULLUPS
 #if DISABLED(ENDSTOPPULLUPS)
   // Disable ENDSTOPPULLUPS to set pullups individually
   //#define ENDSTOPPULLUP_XMAX
   //#define ENDSTOPPULLUP_YMAX
   //#define ENDSTOPPULLUP_ZMAX
-  #define ENDSTOPPULLUP_XMIN
-  #define ENDSTOPPULLUP_YMIN
+  // #define ENDSTOPPULLUP_XMIN
+  // #define ENDSTOPPULLUP_YMIN
   // #define ENDSTOPPULLUP_ZMIN
   // #define ENDSTOPPULLUP_ZMIN_PROBE
 #endif
@@ -601,13 +601,13 @@
 //#define ENDSTOPPULLDOWNS
 #if DISABLED(ENDSTOPPULLDOWNS)
   // Disable ENDSTOPPULLDOWNS to set pulldowns individually
-  #define ENDSTOPPULLDOWN_XMAX
+  // #define ENDSTOPPULLDOWN_XMAX
   //#define ENDSTOPPULLDOWN_YMAX
   //#define ENDSTOPPULLDOWN_ZMAX
   //#define ENDSTOPPULLDOWN_XMIN
   //#define ENDSTOPPULLDOWN_YMIN
-  #define ENDSTOPPULLDOWN_ZMIN
-  #define ENDSTOPPULLDOWN_ZMIN_PROBE
+  // #define ENDSTOPPULLDOWN_ZMIN
+  // #define ENDSTOPPULLDOWN_ZMIN_PROBE
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
