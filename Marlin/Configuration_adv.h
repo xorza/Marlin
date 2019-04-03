@@ -1577,7 +1577,7 @@
    * When disabled, Marlin will use spreadCycle stepping mode.
    */
   #define STEALTHCHOP_XY
-  #define STEALTHCHOP_Z
+  //#define STEALTHCHOP_Z
   //#define STEALTHCHOP_E
 
   /**
@@ -1670,7 +1670,7 @@
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
     #define X_STALL_SENSITIVITY  2
-    #define Y_STALL_SENSITIVITY  2
+    #define Y_STALL_SENSITIVITY  3
     //#define Z_STALL_SENSITIVITY  8
   #endif
 
