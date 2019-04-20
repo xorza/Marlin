@@ -19,21 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-#include "../../inc/MarlinConfig.h"
-
-#if ENABLED(SDSUPPORT)
-
-#include "../gcode.h"
-#include "../../sd/cardreader.h"
+#pragma once
 
 /**
- * M23: Open a file
+ * HAL/HAL_ST7920.h
+ * For the HALs that provide direct access to the ST7920 display
+ * (bypassing U8G), it will allow the LIGHTWEIGHT_UI to operate.
  */
-void GcodeSuite::M23() {
-  // Simplify3D includes the size, so zero out all spaces (#7227)
-  for (char *fn = parser.string_arg; *fn; ++fn) if (*fn == ' ') *fn = '\0';
-  card.openFile(parser.string_arg, true);
-}
 
-#endif // SDSUPPORT
+#if HAS_GRAPHICAL_LCD && ENABLED(LIGHTWEIGHT_UI)
+  void ST7920_cs();
+  void ST7920_ncs();
+  void ST7920_set_cmd();
+  void ST7920_set_dat();
+  void ST7920_write_byte(const uint8_t data);
+#endif

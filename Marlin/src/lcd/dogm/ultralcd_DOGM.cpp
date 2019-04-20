@@ -175,14 +175,14 @@ void MarlinUI::set_font(const MarlinFont font_nr) {
 
     // Can the text fit to the right of the bitmap?
     if (text_max_width < rspace) {
-      constexpr uint8_t inter = (width - text_max_width - (START_BMPWIDTH)) / 3; // Evenly distribute horizontal space
+      constexpr int8_t inter = (width - text_max_width - (START_BMPWIDTH)) / 3; // Evenly distribute horizontal space
       offx = inter;                             // First the boot logo...
       offy = (height - (START_BMPHEIGHT)) / 2;  // ...V-aligned in the full height
       txt_offx_1 = txt_offx_2 = inter + (START_BMPWIDTH) + inter; // Text right of the bitmap
       txt_base = (height + MENU_FONT_ASCENT + text_total_height - (MENU_FONT_HEIGHT)) / 2; // Text vertical center
     }
     else {
-      constexpr uint8_t inter = (height - text_total_height - (START_BMPHEIGHT)) / 3; // Evenly distribute vertical space
+      constexpr int8_t inter = (height - text_total_height - (START_BMPHEIGHT)) / 3; // Evenly distribute vertical space
       offy = inter;                             // V-align boot logo proportionally
       offx = rspace / 2;                        // Center the boot logo in the whole space
       txt_offx_1 = (width - text_width_1) / 2;  // Text 1 centered
@@ -554,22 +554,22 @@ void MarlinUI::clear_lcd() { } // Automatically cleared by Picture Loop
   #if EITHER(BABYSTEP_ZPROBE_GFX_OVERLAY, MESH_EDIT_GFX_OVERLAY)
 
     const unsigned char cw_bmp[] PROGMEM = {
-      B00000011,B11111000,B00000000,
-      B00001111,B11111110,B00000000,
-      B00011110,B00001111,B00000000,
-      B00111000,B00000111,B00000000,
-      B00111000,B00000011,B10000000,
-      B01110000,B00000011,B10000000,
-      B01110000,B00001111,B11100000,
-      B01110000,B00000111,B11000000,
-      B01110000,B00000011,B10000000,
-      B01110000,B00000001,B00000000,
-      B01110000,B00000000,B00000000,
-      B00111000,B00000000,B00000000,
-      B00111000,B00000111,B00000000,
-      B00011110,B00001111,B00000000,
-      B00001111,B11111110,B00000000,
-      B00000011,B11111000,B00000000
+      B00000001,B11111100,B00000000,
+      B00000111,B11111111,B00000000,
+      B00001111,B00000111,B10000000,
+      B00001110,B00000001,B11000000,
+      B00000000,B00000001,B11000000,
+      B00000000,B00000000,B11100000,
+      B00001000,B00000000,B11100000,
+      B00011100,B00000000,B11100000,
+      B00111110,B00000000,B11100000,
+      B01111111,B00000000,B11100000,
+      B00011100,B00000000,B11100000,
+      B00001110,B00000000,B11100000,
+      B00001110,B00000001,B11000000,
+      B00000111,B10000011,B11000000,
+      B00000011,B11111111,B10000000,
+      B00000000,B11111110,B00000000
     };
 
     const unsigned char ccw_bmp[] PROGMEM = {
@@ -669,10 +669,10 @@ void MarlinUI::clear_lcd() { } // Automatically cleared by Picture Loop
 
       // Draw cw/ccw indicator and up/down arrows.
       if (PAGE_CONTAINS(47, 62)) {
-        u8g.drawBitmapP(left  + 0, 47, 3, 16, rot_down);
-        u8g.drawBitmapP(right + 0, 47, 3, 16, rot_up);
-        u8g.drawBitmapP(right + 20, 48 - dir, 2, 13, up_arrow_bmp);
-        u8g.drawBitmapP(left  + 20, 49 - dir, 2, 13, down_arrow_bmp);
+        u8g.drawBitmapP(right + 0, 48 - dir, 2, 13, up_arrow_bmp);
+        u8g.drawBitmapP(left  + 0, 49 - dir, 2, 13, down_arrow_bmp);
+        u8g.drawBitmapP(left  + 13, 47, 3, 16, rot_down);
+        u8g.drawBitmapP(right + 13, 47, 3, 16, rot_up);
       }
     }
 

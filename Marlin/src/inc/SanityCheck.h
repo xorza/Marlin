@@ -343,6 +343,8 @@
   #error "MAX6675_SS2 is now MAX6675_SS2_PIN. Please update your configuration and/or pins."
 #elif defined(SPINDLE_LASER_ENABLE_PIN)
   #error "SPINDLE_LASER_ENABLE_PIN is now SPINDLE_LASER_ENA_PIN. Please update your configuration and/or pins."
+#elif defined(CHAMBER_HEATER_PIN)
+  #error "CHAMBER_HEATER_PIN is now HEATER_CHAMBER_PIN. Please update your configuration and/or pins."
 #elif defined(TMC_Z_CALIBRATION)
   #error "TMC_Z_CALIBRATION has been deprecated in favor of Z_STEPPER_AUTO_ALIGN. Please update your configuration."
 #elif defined(Z_MIN_PROBE_ENDSTOP)
@@ -1782,6 +1784,13 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
   + ENABLED(ULTI_CONTROLLER) \
   + ENABLED(EXTENSIBLE_UI)
   #error "Please select no more than one LCD controller option."
+#endif
+
+/**
+ * Fysetc Mini 12864 requirements
+ */
+#if ENABLED(FYSETC_MINI_12864) && DISABLED(LED_USER_PRESET_STARTUP)
+  #error "FYSETC_MINI_12864 requires LED_USER_PRESET_STARTUP to enable the backlight on startup."
 #endif
 
 /**
