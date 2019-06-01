@@ -23,13 +23,16 @@
 #include "../inc/MarlinConfigPre.h"
 
 // These displays all share the MarlinUI class
-#if HAS_SPI_LCD || EITHER(MALYAN_LCD, EXTENSIBLE_UI)
+#if HAS_DISPLAY
   #include "ultralcd.h"
   #include "fontutils.h"
   MarlinUI ui;
   #include "../sd/cardreader.h"
   #if ENABLED(EXTENSIBLE_UI)
     #define START_OF_UTF8_CHAR(C) (((C) & 0xC0u) != 0x80u)
+  #endif
+  #if ENABLED(HOST_ACTION_COMMANDS)
+    #include "../feature/host_actions.h"
   #endif
 #endif
 
@@ -211,7 +214,7 @@ millis_t next_button_update_ms;
     }
   }
 
-  void MarlinUI::draw_select_screen_prompt(PGM_P const pref, const char * const string/*=NULL*/, PGM_P const suff/*=NULL*/) {
+  void MarlinUI::draw_select_screen_prompt(PGM_P const pref, const char * const string/*=nullptr*/, PGM_P const suff/*=nullptr*/) {
     const uint8_t plen = utf8_strlen_P(pref), slen = suff ? utf8_strlen_P(suff) : 0;
     uint8_t x = 0, y = 0;
     if (!string && plen + slen <= LCD_WIDTH) {
@@ -292,10 +295,6 @@ void MarlinUI::init() {
 
   #if HAS_ENCODER_ACTION
     encoderDiff = 0;
-  #endif
-
-  #if HAS_TRINAMIC && HAS_LCD_MENU
-    init_tmc_section();
   #endif
 }
 
@@ -746,6 +745,7 @@ void MarlinUI::update() {
 
       refresh();
       init_lcd(); // May revive the LCD if static electricity killed it
+
       ms = millis();
       next_lcd_update_ms = ms + LCD_UPDATE_INTERVAL;  // delay LCD update until after SD activity completes
     }
@@ -999,8 +999,8 @@ void MarlinUI::update() {
 
   uint8_t get_ADC_keyValue(void) {
     if (thermalManager.ADCKey_count >= 16) {
-      const uint16_t currentkpADCValue = thermalManager.current_ADCKey_raw >> 2;
-      thermalManager.current_ADCKey_raw = 0;
+      const uint16_t currentkpADCValue = thermalManager.current_ADCKey_raw << 2;
+      thermalManager.current_ADCKey_raw = 1024;
       thermalManager.ADCKey_count = 0;
       if (currentkpADCValue < 4000)
         for (uint8_t i = 0; i < ADC_KEY_NUM; i++) {
@@ -1191,7 +1191,7 @@ void MarlinUI::update() {
 
 #endif // HAS_SPI_LCD
 
-#if HAS_SPI_LCD || ENABLED(EXTENSIBLE_UI)
+#if HAS_DISPLAY
 
   #if ENABLED(EXTENSIBLE_UI)
     #include "extensible_ui/ui_api.h"
@@ -1361,6 +1361,63 @@ void MarlinUI::update() {
     set_status_P(msg, -1);
   }
 
+  void MarlinUI::abort_print() {
+    #if ENABLED(SDSUPPORT)
+      wait_for_heatup = wait_for_user = false;
+      card.flag.abort_sd_printing = true;
+    #endif
+    #ifdef ACTION_ON_CANCEL
+      host_action_cancel();
+    #endif
+    #if ENABLED(HOST_PROMPT_SUPPORT)
+      host_prompt_open(PROMPT_INFO, PSTR("UI Abort"));
+    #endif
+    print_job_timer.stop();
+    set_status_P(PSTR(MSG_PRINT_ABORTED));
+    #if HAS_SPI_LCD
+      return_to_status();
+    #endif
+  }
+
+  void MarlinUI::pause_print() {
+    synchronize(PSTR(MSG_PAUSE_PRINT));
+
+    #if ENABLED(POWER_LOSS_RECOVERY)
+      if (recovery.enabled) recovery.save(true, false);
+    #endif
+
+    #if ENABLED(HOST_PROMPT_SUPPORT)
+      host_prompt_open(PROMPT_PAUSE_RESUME, PSTR("UI Pause"), PSTR("Resume"));
+    #endif
+
+    set_status_P(PSTR(MSG_PRINT_PAUSED));
+
+    #if ENABLED(PARK_HEAD_ON_PAUSE)
+      #if HAS_SPI_LCD
+        lcd_pause_show_message(PAUSE_MESSAGE_PAUSING, PAUSE_MODE_PAUSE_PRINT);  // Show message immediately to let user know about pause in progress
+      #endif
+      enqueue_and_echo_commands_P(PSTR("M25 P\nM24"));
+    #elif ENABLED(SDSUPPORT)
+      enqueue_and_echo_commands_P(PSTR("M25"));
+    #elif defined(ACTION_ON_PAUSE)
+      host_action_pause();
+    #endif
+  }
+
+  void MarlinUI::resume_print() {
+    reset_status();
+    #if ENABLED(PARK_HEAD_ON_PAUSE)
+      wait_for_heatup = wait_for_user = false;
+    #endif
+    #if ENABLED(SDSUPPORT)
+      if (card.isPaused()) enqueue_and_echo_commands_P(PSTR("M24"));
+    #endif
+    #ifdef ACTION_ON_RESUME
+      host_action_resume();
+    #endif
+    print_job_timer.start(); // Also called by M24
+  }
+
   #if HAS_PRINT_PROGRESS
     uint8_t MarlinUI::get_progress() {
       #if ENABLED(LCD_SET_PROGRESS_MANUALLY)
@@ -1375,4 +1432,4 @@ void MarlinUI::update() {
     }
   #endif
 
-#endif // HAS_SPI_LCD || EXTENSIBLE_UI
+#endif // HAS_DISPLAY
