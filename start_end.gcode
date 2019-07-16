@@ -9,7 +9,7 @@ M140 S{material_bed_temperature_layer_0} ; set bed temp
 M190 S{material_bed_temperature_layer_0} ; wait for bed temp
 M109 S{material_print_temperature_layer_0} ; wait for extruder temp
 
-M900 K0.04
+;M900 K0.04 ; K factor
 
 G28 W ; home all without mesh bed level
 G80 ; mesh bed leveling
@@ -27,7 +27,7 @@ M140 S0 ;bed heater off
 M107      ;fan off
 
 G91 ;relative positioning
-G1 Z+0.5 E-15.0 ;retract the filament a bit before lifting the nozzle, to release some of the pressure
+G1 Z+0.5 E-10.0 ;retract the filament a bit before lifting the nozzle, to release some of the pressure
 
 G90 ;absolute positioning
 G1 X0 Y200 F3000.0 ;move X/Y, so the head is out of the way
