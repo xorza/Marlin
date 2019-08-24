@@ -60,7 +60,7 @@
   #include "../../libs/numtostr.h"
 #endif
 
-#if DO_SWITCH_EXTRUDER || EITHER(SWITCHING_NOZZLE, PARKING_EXTRUDER)
+#if EXTRUDERS > 1
   #include "../../module/tool_change.h"
 #endif
 
@@ -96,6 +96,10 @@
 
 #if ENABLED(BABYSTEPPING)
   #include "../../feature/babystep.h"
+#endif
+
+#if ENABLED(HOST_PROMPT_SUPPORT)
+  #include "../../feature/host_actions.h"
 #endif
 
 inline float clamp(const float value, const float minimum, const float maximum) {
@@ -263,8 +267,12 @@ namespace ExtUI {
     return flags.manual_motion ? destination[axis] : current_position[axis];
   }
 
-  float getAxisPosition_mm(const extruder_t) {
-    return flags.manual_motion ? destination[E_AXIS] : current_position[E_AXIS];
+  float getAxisPosition_mm(const extruder_t extruder) {
+    const extruder_t old_tool = getActiveTool();
+    setActiveTool(extruder, true);
+    const float pos = flags.manual_motion ? destination[E_AXIS] : current_position[E_AXIS];
+    setActiveTool(old_tool, true);
+    return pos;
   }
 
   void setAxisPosition_mm(const float position, const axis_t axis) {
@@ -311,6 +319,9 @@ namespace ExtUI {
       }
     #endif
 
+    constexpr float max_manual_feedrate[XYZE] = MANUAL_FEEDRATE;
+    setFeedrate_mm_s(max_manual_feedrate[axis]);
+
     if (!flags.manual_motion) set_destination_from_current();
     destination[axis] = clamp(position, min, max);
     flags.manual_motion = true;
@@ -319,6 +330,8 @@ namespace ExtUI {
   void setAxisPosition_mm(const float position, const extruder_t extruder) {
     setActiveTool(extruder, true);
 
+    constexpr float max_manual_feedrate[XYZE] = MANUAL_FEEDRATE;
+    setFeedrate_mm_s(max_manual_feedrate[E_AXIS]);
     if (!flags.manual_motion) set_destination_from_current();
     destination[E_AXIS] = position;
     flags.manual_motion = true;
@@ -359,9 +372,7 @@ namespace ExtUI {
   void setActiveTool(const extruder_t extruder, bool no_move) {
     #if EXTRUDERS > 1
       const uint8_t e = extruder - E0;
-      #if DO_SWITCH_EXTRUDER || EITHER(SWITCHING_NOZZLE, PARKING_EXTRUDER)
-        if (e != active_extruder) tool_change(e, no_move);
-      #endif
+      if (e != active_extruder) tool_change(e, no_move);
       active_extruder = e;
     #else
       UNUSED(extruder);
@@ -668,9 +679,11 @@ namespace ExtUI {
             && (linked_nozzles || active_extruder == 0)
           #endif
         ) zprobe_zoffset += mm;
+      #else
+        UNUSED(mm);
       #endif
 
-      #if EXTRUDERS > 1
+      #if EXTRUDERS > 1 && HAS_HOTEND_OFFSET
         /**
          * When linked_nozzles is false, as an axis is babystepped
          * adjust the hotend offsets so that the other nozzles are
@@ -687,6 +700,7 @@ namespace ExtUI {
         }
       #else
         UNUSED(linked_nozzles);
+        UNUSED(mm);
       #endif
     }
 
@@ -785,7 +799,7 @@ namespace ExtUI {
     char* getTotalPrints_str(char buffer[21])    { strcpy(buffer,i16tostr3left(print_job_timer.getStats().totalPrints));    return buffer; }
     char* getFinishedPrints_str(char buffer[21]) { strcpy(buffer,i16tostr3left(print_job_timer.getStats().finishedPrints)); return buffer; }
     char* getTotalPrintTime_str(char buffer[21]) { duration_t(print_job_timer.getStats().printTime).toString(buffer);       return buffer; }
-    char* getLongestPrint_str(char buffer[21])   { duration_t(print_job_timer.getStats().printTime).toString(buffer);       return buffer; }
+    char* getLongestPrint_str(char buffer[21])   { duration_t(print_job_timer.getStats().longestPrint).toString(buffer);    return buffer; }
     char* getFilamentUsed_str(char buffer[21])   {
       printStatistics stats = print_job_timer.getStats();
       sprintf_P(buffer, PSTR("%ld.%im"), long(stats.filamentUsed / 1000), int16_t(stats.filamentUsed / 100) % 10);

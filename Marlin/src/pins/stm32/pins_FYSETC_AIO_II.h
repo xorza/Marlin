@@ -25,8 +25,10 @@
   #error "Oops! Select an STM32F1 board in 'Tools > Board.'"
 #endif
 
-#define BOARD_NAME        "FYSETC AIO II"
-#define BOARD_WEBSITE_URL "https://fysetc.com"
+#define BOARD_INFO_NAME   "FYSETC AIO II"
+#define BOARD_WEBSITE_URL "fysetc.com"
+
+#define DISABLE_JTAG
 
 #define pins_v2_20190128   // geo-f:add for new pins define
 
@@ -77,11 +79,11 @@
 //
 
 // X:PA2 Y:PA3 Z:PB12 E:PB13 // changed for test
-#define MOTOR_CURRENT_PWM_XY_PIN PA3
-#define MOTOR_CURRENT_PWM_Z_PIN  PA2 // PB12
+//#define MOTOR_CURRENT_PWM_XY_PIN PA3
+//#define MOTOR_CURRENT_PWM_Z_PIN  PA2 // PB12
 //#define MOTOR_CURRENT_PWM_XY_PIN PB6
 //#define MOTOR_CURRENT_PWM_Z_PIN  PB7 // PB12
-#define MOTOR_CURRENT_PWM_E_PIN  -1  // PB13
+//#define MOTOR_CURRENT_PWM_E_PIN  -1  // PB13
 // Motor current PWM conversion, PWM value = MotorCurrentSetting * 255 / range
 #ifndef MOTOR_CURRENT_PWM_RANGE
   #define MOTOR_CURRENT_PWM_RANGE 1500 // geo-f:old 2000
@@ -135,7 +137,7 @@
       #define DOGLCD_CS    PB7
     #endif
 
-    //#define LCD_CONTRAST 190
+    //#define LCD_CONTRAST_INIT 190
     //#define LCD_SCREEN_ROT_90
     //#define LCD_SCREEN_ROT_180
     //#define LCD_SCREEN_ROT_270

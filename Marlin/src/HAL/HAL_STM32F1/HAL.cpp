@@ -93,7 +93,7 @@ uint16_t HAL_adc_result;
 // ------------------------
 STM32ADC adc(ADC1);
 
-uint8_t adc_pins[] = {
+const uint8_t adc_pins[] = {
   #if HAS_TEMP_ADC_0
     TEMP_0_PIN,
   #endif
@@ -201,6 +201,11 @@ void HAL_init(void) {
   #if PIN_EXISTS(LED)
     OUT_WRITE(LED_PIN, LOW);
   #endif
+  #if PIN_EXISTS(USB_CONNECT)
+    OUT_WRITE(USB_CONNECT_PIN, !USB_CONNECT_INVERTING);  // USB clear connection
+    delay(1000);                                         // Give OS time to notice
+    OUT_WRITE(USB_CONNECT_PIN, USB_CONNECT_INVERTING);
+  #endif
 }
 
 /* VGPV Done with defines
@@ -260,8 +265,12 @@ extern "C" {
 void HAL_adc_init(void) {
   // configure the ADC
   adc.calibrate();
-  adc.setSampleRate(ADC_SMPR_41_5); // ?
-  adc.setPins(adc_pins, ADC_PIN_COUNT);
+  #if F_CPU > 72000000
+    adc.setSampleRate(ADC_SMPR_71_5); // 71.5 ADC cycles
+  #else
+    adc.setSampleRate(ADC_SMPR_41_5); // 41.5 ADC cycles
+  #endif
+  adc.setPins((uint8_t *)adc_pins, ADC_PIN_COUNT);
   adc.setDMA(HAL_adc_results, (uint16_t)ADC_PIN_COUNT, (uint32_t)(DMA_MINC_MODE | DMA_CIRC_MODE), nullptr);
   adc.setScanMode();
   adc.setContinuous();

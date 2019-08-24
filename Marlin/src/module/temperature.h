@@ -268,7 +268,11 @@ class Temperature {
 
     static volatile bool in_temp_isr;
 
-    static hotend_info_t temp_hotend[HOTENDS];
+    static hotend_info_t temp_hotend[HOTENDS
+      #if ENABLED(TEMP_SENSOR_1_AS_REDUNDANT)
+        + 1
+      #endif
+    ];
 
     #if HAS_HEATED_BED
       static bed_info_t temp_bed;
@@ -785,7 +789,7 @@ class Temperature {
       #endif
     #endif
 
-    #if EITHER(ULTRA_LCD, EXTENSIBLE_UI)
+    #if HAS_DISPLAY
       static void set_heating_message(const uint8_t e);
     #endif
 

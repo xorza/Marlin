@@ -21,14 +21,14 @@
  */
 #pragma once
 
-#if !defined(STM32F7)
+#ifndef STM32F7
   #error "Oops! Select an STM32F7 board in 'Tools > Board.'"
 #elif HOTENDS > 3 || E_STEPPERS > 3
   #error "The-Borg supports up to 3 hotends / E-steppers."
 #endif
 
-#define BOARD_NAME           "The-Borge"
-#define DEFAULT_MACHINE_NAME BOARD_NAME
+#define BOARD_INFO_NAME      "The-Borge"
+#define DEFAULT_MACHINE_NAME BOARD_INFO_NAME
 
 #define E2END 0xFFF   // EEPROM end address
 

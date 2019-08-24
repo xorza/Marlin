@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2016 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,8 @@
   #error "TTOSCAR supports up to 5 hotends / E-steppers. Comment out this line to continue."
 #endif
 
-#define BOARD_NAME           "TT OSCAR"
-#define DEFAULT_MACHINE_NAME BOARD_NAME
+#define BOARD_INFO_NAME      "TT OSCAR"
+#define DEFAULT_MACHINE_NAME BOARD_INFO_NAME
 
 //
 // Servos
@@ -99,9 +99,9 @@
 #define E4_ENABLE_PIN      47
 #define E4_CS_PIN          E0_CS_PIN
 
-#if ENABLED(HAVE_TMC2208)
+#if HAS_TMC220x
   /**
-   * TMC2208 stepper drivers
+   * TMC2208/TMC2209 stepper drivers
    *
    * Hardware serial communication ports.
    * If undefined software serial is used according to the pins below
@@ -268,7 +268,7 @@
 // LCDs and Controllers //
 //////////////////////////
 
-#if ENABLED(ULTRA_LCD)
+#if HAS_SPI_LCD
 
   //
   // LCD Display output pins
@@ -337,7 +337,7 @@
     #endif
 
     #if DISABLED(NEWPANEL)
-      // Buttons are attached to a shift register
+      // Buttons attached to a shift register
       // Not wired yet
       //#define SHIFT_CLK    38
       //#define SHIFT_LD     42
@@ -436,7 +436,7 @@
       #define DOGLCD_CS    25
 
       // GLCD features
-      //#define LCD_CONTRAST 190
+      //#define LCD_CONTRAST_INIT 190
       // Uncomment screen orientation
       //#define LCD_SCREEN_ROT_90
       //#define LCD_SCREEN_ROT_180
@@ -463,7 +463,7 @@
       #define DOGLCD_CS    66
 
       // GLCD features
-      //#define LCD_CONTRAST 190
+      //#define LCD_CONTRAST_INIT 190
       // Uncomment screen orientation
       //#define LCD_SCREEN_ROT_90
       //#define LCD_SCREEN_ROT_180
