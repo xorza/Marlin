@@ -2238,7 +2238,7 @@
    */
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  //#define STEALTHCHOP_E
+  #define STEALTHCHOP_E
 
   /**
    * Optimize spreadCycle chopper parameters by using predefined parameter sets
@@ -2288,11 +2288,11 @@
   #define X2_HYBRID_THRESHOLD    121
   #define Y_HYBRID_THRESHOLD     121
   #define Y2_HYBRID_THRESHOLD    121
-  #define Z_HYBRID_THRESHOLD      12
+  #define Z_HYBRID_THRESHOLD      13
   #define Z2_HYBRID_THRESHOLD      3
   #define Z3_HYBRID_THRESHOLD      3
   #define Z4_HYBRID_THRESHOLD      3
-  #define E0_HYBRID_THRESHOLD     10
+  #define E0_HYBRID_THRESHOLD      5
   #define E1_HYBRID_THRESHOLD     30
   #define E2_HYBRID_THRESHOLD     30
   #define E3_HYBRID_THRESHOLD     30
