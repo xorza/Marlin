@@ -1882,13 +1882,13 @@
   #define FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE   6  // (mm/s) Slow move when starting load.
   #define FILAMENT_CHANGE_SLOW_LOAD_LENGTH     0  // (mm) Slow length, to allow time to insert material.
                                                   // 0 to disable start loading and skip to fast load only
-  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE   6  // (mm/s) Load filament feedrate. This can be pretty fast.
+  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE  10  // (mm/s) Load filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH     0  // (mm) Load length of filament, from extruder gear to nozzle.
+  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH   100  // (mm) Load length of filament, from extruder gear to nozzle.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
   //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
-  #define ADVANCED_PAUSE_PURGE_FEEDRATE        3  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
+  #define ADVANCED_PAUSE_PURGE_FEEDRATE       10  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
   #define ADVANCED_PAUSE_PURGE_LENGTH         50  // (mm) Length to extrude after loading.
                                                   //   Set to 0 for manual extrusion.
                                                   //   Filament can be extruded repeatedly from the Filament Change menu
@@ -2045,35 +2045,35 @@
   #define INTERPOLATE       true  // Interpolate X/Y/Z_MICROSTEPS to 256
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       600        // (mA) RMS current. Multiply by 1.414 for peak current.
-    #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
+    #define X_CURRENT        600        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT_HOME   X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16    // 0..256
-    #define X_RSENSE          0.11
+    #define X_RSENSE         0.11
     #define X_CHAIN_POS      -1    // <=0 : Not chained. 1 : MCU MOSI connected. 2 : Next in chain, ...
   #endif
 
   #if AXIS_IS_TMC(X2)
-    #define X2_CURRENT      600
-    #define X2_CURRENT_HOME X2_CURRENT
-    #define X2_MICROSTEPS    16
-    #define X2_RSENSE         0.11
-    #define X2_CHAIN_POS     -1
+    #define X2_CURRENT       X_CURRENT
+    #define X2_CURRENT_HOME  X2_CURRENT
+    #define X2_MICROSTEPS    X_MICROSTEPS
+    #define X2_RSENSE        X_RSENSE
+    #define X2_CHAIN_POS     X_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(Y)
     #define Y_CURRENT       600
     #define Y_CURRENT_HOME  Y_CURRENT
-    #define Y_MICROSTEPS     16
-    #define Y_RSENSE          0.11
-    #define Y_CHAIN_POS      -1
+    #define Y_MICROSTEPS    16
+    #define Y_RSENSE        0.11
+    #define Y_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(Y2)
-    #define Y2_CURRENT      600
-    #define Y2_CURRENT_HOME Y2_CURRENT
-    #define Y2_MICROSTEPS    16
-    #define Y2_RSENSE         0.11
-    #define Y2_CHAIN_POS     -1
+    #define Y2_CURRENT       Y_CURRENT
+    #define Y2_CURRENT_HOME  Y2_CURRENT
+    #define Y2_MICROSTEPS    Y_MICROSTEPS
+    #define Y2_RSENSE        Y_RSENSE
+    #define Y2_CHAIN_POS     Y_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(Z)
@@ -2336,7 +2336,7 @@
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
     // TMC2209: 0...255. TMC2130: -64...63
     #define X_STALL_SENSITIVITY  165
-    #define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
+    //#define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
     #define Y_STALL_SENSITIVITY  165
     //#define Z_STALL_SENSITIVITY  8
     //#define SPI_ENDSTOPS              // TMC2130 only
@@ -2612,12 +2612,12 @@
  * Add the M240 G-code to take a photo.
  * The photo can be triggered by a digital pin or a physical movement.
  */
-//#define PHOTO_GCODE
+#define PHOTO_GCODE
 #if ENABLED(PHOTO_GCODE)
   // A position to move to (and raise Z) before taking the photo
-  //#define PHOTO_POSITION { X_MAX_POS - 5, Y_MAX_POS, 0 }  // { xpos, ypos, zraise } (M240 X Y Z)
-  //#define PHOTO_DELAY_MS   100                            // (ms) Duration to pause before moving back (M240 P)
-  //#define PHOTO_RETRACT_MM   6.5                          // (mm) E retract/recover for the photo move (M240 R S)
+  #define PHOTO_POSITION { X_MAX_POS - 5, Y_MAX_POS - 5, 0 }  // { xpos, ypos, zraise } (M240 X Y Z)
+  #define PHOTO_DELAY_MS   100                            // (ms) Duration to pause before moving back (M240 P)
+  #define PHOTO_RETRACT_MM   6.5                          // (mm) E retract/recover for the photo move (M240 R S)
 
   // Canon RC-1 or homebrew digital camera trigger
   // Data from: http://www.doc-diy.net/photo/rc-1_hacked/
@@ -2631,7 +2631,7 @@
   //#define PHOTO_SWITCH_POSITION { X_MAX_POS, Y_MAX_POS }  // { xpos, ypos } (M240 I J)
 
   // Duration to hold the switch or keep CHDK_PIN high
-  //#define PHOTO_SWITCH_MS   50 // (ms) (M240 D)
+  #define PHOTO_SWITCH_MS   50 // (ms) (M240 D)
 
   /**
    * PHOTO_PULSES_US may need adjustment depending on board and camera model.

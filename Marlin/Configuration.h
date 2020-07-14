@@ -745,11 +745,11 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 200, 200, 12, 10 }
+#define DEFAULT_MAX_FEEDRATE          { 200, 200, 12, 30 }
 
 #define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 200, 200, 12, 10 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    { 200, 200, 12, 30 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -971,7 +971,7 @@
 #define MIN_PROBE_EDGE 0
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED (80 * 60)
+#define XY_PROBE_SPEED (120 * 60)
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
