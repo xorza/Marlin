@@ -145,6 +145,27 @@ void menu_main() {
       if (printingIsPaused()) ACTION_ITEM(MSG_RESUME_PRINT, ui.resume_print);
     #endif
 
+    if (card_detected) {
+      if (!card_open) {
+        MENU_ITEM(gcode,
+          #if PIN_EXISTS(SD_DETECT)
+            MSG_CHANGE_MEDIA, M21_STR
+          #else
+            MSG_RELEASE_MEDIA, PSTR("M22")
+          #endif
+        );
+        SUBMENU(MSG_MEDIA_MENU, menu_media);
+      }
+    }
+    else {
+      #if PIN_EXISTS(SD_DETECT)
+        ACTION_ITEM(MSG_NO_MEDIA, nullptr);
+      #else
+        GCODES_ITEM(MSG_ATTACH_MEDIA, M21_STR);
+        ACTION_ITEM(MSG_MEDIA_RELEASED, nullptr);
+      #endif
+    }
+
     SUBMENU(MSG_MOTION, menu_motion);
   }
 
@@ -162,7 +183,7 @@ void menu_main() {
     if (!busy) SUBMENU(MSG_MMU2_MENU, menu_mmu2);
   #endif
 
-  SUBMENU(MSG_CONFIGURATION, menu_configuration);
+  //SUBMENU(MSG_CONFIGURATION, menu_configuration);
 
   #if ENABLED(CUSTOM_USER_MENUS)
     #ifdef CUSTOM_USER_MENU_TITLE
@@ -211,27 +232,6 @@ void menu_main() {
     #if ENABLED(MENU_ADDAUTOSTART)
       if (!busy) ACTION_ITEM(MSG_AUTOSTART, card.beginautostart);
     #endif
-
-    if (card_detected) {
-      if (!card_open) {
-        MENU_ITEM(gcode,
-          #if PIN_EXISTS(SD_DETECT)
-            MSG_CHANGE_MEDIA, M21_STR
-          #else
-            MSG_RELEASE_MEDIA, PSTR("M22")
-          #endif
-        );
-        SUBMENU(MSG_MEDIA_MENU, menu_media);
-      }
-    }
-    else {
-      #if PIN_EXISTS(SD_DETECT)
-        ACTION_ITEM(MSG_NO_MEDIA, nullptr);
-      #else
-        GCODES_ITEM(MSG_ATTACH_MEDIA, M21_STR);
-        ACTION_ITEM(MSG_MEDIA_RELEASED, nullptr);
-      #endif
-    }
 
   #endif // HAS_ENCODER_WHEEL && SDSUPPORT
 
