@@ -16,7 +16,7 @@ G80 ; mesh bed leveling
 
 G92 E0.0 ; reset extruder distance position
 G1 X0.0 Y0.0 Z0.3 F3000.0 ; go outside print area
-G1 X100.0 E30.0 F1000.0 ; intro line
+G1 X160.0 E50.0 F1000.0 ; intro line
 
 G92 E0.0 ; reset extruder distance position
 
@@ -30,6 +30,6 @@ G91 ;relative positioning
 G1 Z+0.5 E-10.0 ;retract the filament a bit before lifting the nozzle, to release some of the pressure
 
 G90 ;absolute positioning
-G1 X0 Y200 F3000.0 ;move X/Y, so the head is out of the way
+G1 X20 Y190 F3000.0 ;move X/Y, so the head is out of the way
 
 M84 ;steppers off
