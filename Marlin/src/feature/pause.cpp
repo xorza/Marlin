@@ -264,15 +264,15 @@ bool load_filament(const float &slow_load_length/*=0*/, const float &fast_load_l
         filament_load_host_prompt();  // Initiate another host prompt. (NOTE: host_response_handler may also do this!)
       #endif
 
-      #if HAS_LCD_MENU
-        if (show_lcd) {
-          // Show "Purge More" / "Resume" menu and wait for reply
-          KEEPALIVE_STATE(PAUSED_FOR_USER);
-          wait_for_user = false;
-          lcd_pause_show_message(PAUSE_MESSAGE_OPTION);
-          while (pause_menu_response == PAUSE_RESPONSE_WAIT_FOR) idle_no_sleep();
-        }
-      #endif
+      // #if HAS_LCD_MENU
+      //   if (show_lcd) {
+      //     // Show "Purge More" / "Resume" menu and wait for reply
+      //     KEEPALIVE_STATE(PAUSED_FOR_USER);
+      //     wait_for_user = false;
+      //     lcd_pause_show_message(PAUSE_MESSAGE_OPTION);
+      //     while (pause_menu_response == PAUSE_RESPONSE_WAIT_FOR) idle_no_sleep();
+      //   }
+      // #endif
 
       // Keep looping if "Purge More" was selected
     } while (false
