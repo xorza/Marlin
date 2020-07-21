@@ -44,11 +44,16 @@ PrinterEventLEDs printerEventLEDs;
     return (uint8_t)map(constrain(current, start, target), start, target, 0.f, 255.f);
   }
 
-  inline void pel_set_rgb(const uint8_t r, const uint8_t g, const uint8_t b) {
+  inline float pel_progress(const float &start, const float &current, const float &target) {
+    const float value = constrain(current, start, target);
+    return (value - start) / (target - start);
+  }
+
+  inline void pel_set_rgb(const uint8_t r, const uint8_t g, const uint8_t b, const float progress) {
     leds.set_color(
       MakeLEDColor(r, g, b, 0, neo.brightness())
         #if ENABLED(NEOPIXEL_IS_SEQUENTIAL)
-          , true
+          , progress
         #endif
       );
   }
@@ -59,9 +64,10 @@ PrinterEventLEDs printerEventLEDs;
 
   void PrinterEventLEDs::onHotendHeating(const float &start, const float &current, const float &target) {
     const uint8_t blue = pel_intensity(start, current, target);
+    const float progress = pel_progress(start, current, target);
     if (blue != old_intensity) {
       old_intensity = blue;
-      pel_set_rgb(255, 0, 255 - blue);
+      pel_set_rgb(255, 0, 255 - blue, progress);
     }
   }
 
@@ -71,9 +77,10 @@ PrinterEventLEDs printerEventLEDs;
 
   void PrinterEventLEDs::onBedHeating(const float &start, const float &current, const float &target) {
     const uint8_t red = pel_intensity(start, current, target);
+    const float progress = pel_progress(start, current, target);
     if (red != old_intensity) {
       old_intensity = red;
-      pel_set_rgb(red, 0, 255);
+      pel_set_rgb(red, 0, 255, progress);
     }
   }
 #endif

@@ -152,7 +152,7 @@ public:
 
   static void set_color(const LEDColor &color
     #if ENABLED(NEOPIXEL_LED)
-      , bool isSequence=false
+      , float progress = 1.0f
     #endif
   );
 
@@ -164,12 +164,12 @@ public:
       #endif
     #endif
     #if ENABLED(NEOPIXEL_LED)
-      , bool isSequence=false
+        , float progress = 1.0f
     #endif
   ) {
     set_color(MakeLEDColor(r, g, b, w, i)
       #if ENABLED(NEOPIXEL_LED)
-        , isSequence
+        , progress
       #endif
     );
   }
