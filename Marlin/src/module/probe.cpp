@@ -433,11 +433,13 @@ bool Probe::set_deployed(const bool deploy) {
   return false;
 }
 
-#ifdef HOME_AFTER_PROBING
+#ifdef Z_AFTER_PROBING
   // After probing move to a preferred Z position
-  void Probe::move_home_after_probing() {
-    do_blocking_move_to(0.0f, 0.0f, 0.0f);
-    current_position.set(0.0f, 0.0f, 0.0f, current_position.e);
+  void Probe::move_z_after_probing() {
+    if (current_position.z != Z_AFTER_PROBING) {
+      do_blocking_move_to_z(Z_AFTER_PROBING);
+      current_position.z = Z_AFTER_PROBING;
+    }
   }
 #endif
 

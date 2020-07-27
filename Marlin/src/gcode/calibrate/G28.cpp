@@ -397,11 +397,11 @@ void GcodeSuite::G28() {
           homeaxis(Z_AXIS);
         #endif
 
-        #if HOMING_Z_WITH_PROBE && defined(HOME_AFTER_PROBING)
-          #if Z_AFTER_HOMING > 0
+        #if HOMING_Z_WITH_PROBE && defined(Z_AFTER_PROBING)
+          #if Z_AFTER_HOMING > Z_AFTER_PROBING
             do_blocking_move_to_z(Z_AFTER_HOMING);
           #else
-            probe.move_home_after_probing();
+            probe.move_z_after_probing();
           #endif
         #elif defined(Z_AFTER_HOMING)
           do_blocking_move_to_z(Z_AFTER_HOMING);

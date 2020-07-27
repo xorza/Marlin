@@ -1008,8 +1008,7 @@
 #define Z_CLEARANCE_DEPLOY_PROBE      1 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES    1 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     0.2 // Z Clearance between multiple probes
-
-#define HOME_AFTER_PROBING
+#define Z_AFTER_PROBING              20 // Z position after probing is done
 
 #define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
 

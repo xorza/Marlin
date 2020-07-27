@@ -956,8 +956,8 @@ G29_TYPE GcodeSuite::G29() {
   // Sync the planner from the current_position
   if (planner.leveling_active) sync_plan_position();
 
-  #if HAS_BED_PROBE && defined(HOME_AFTER_PROBING)
-    probe.move_home_after_probing();
+  #if HAS_BED_PROBE && defined(Z_AFTER_PROBING)
+    probe.move_z_after_probing();
   #endif
 
   #ifdef Z_PROBE_END_SCRIPT

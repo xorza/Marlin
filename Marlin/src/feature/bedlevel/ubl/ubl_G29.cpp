@@ -797,8 +797,8 @@
         ui.capture();
       #endif
 
-      #ifdef HOME_AFTER_PROBING
-        probe.move_home_after_probing();
+      #ifdef Z_AFTER_PROBING
+        probe.move_z_after_probing();
       #endif
 
       restore_ubl_active_state_and_leave();
@@ -1467,8 +1467,8 @@
         }
 
         probe.stow();
-        #ifdef HOME_AFTER_PROBING
-          probe.move_home_after_probing();
+        #ifdef Z_AFTER_PROBING
+          probe.move_z_after_probing();
         #endif
 
         if (abort_flag) {
@@ -1532,8 +1532,8 @@
         }
       }
       probe.stow();
-      #ifdef HOME_AFTER_PROBING
-        probe.move_home_after_probing();
+      #ifdef Z_AFTER_PROBING
+        probe.move_z_after_probing();
       #endif
 
       if (abort_flag || finish_incremental_LSF(&lsf_results)) {
