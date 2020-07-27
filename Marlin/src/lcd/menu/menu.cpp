@@ -417,6 +417,10 @@ void scroll_screen(const uint8_t limit, const bool is_menu) {
 
         babystep.add_steps(Z_AXIS, babystep_increment);
 
+        // xyze_float_t new_position = current_position;
+        // new_position.z += diff;
+        // do_blocking_move_to(new_position);
+
         if (do_probe) probe.offset.z = new_offs;
         #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
           else hotend_offset[active_extruder].z = new_offs;

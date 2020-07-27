@@ -971,7 +971,7 @@
 #define MIN_PROBE_EDGE 0
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED (120 * 60)
+#define XY_PROBE_SPEED (200 * 60)
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
@@ -1008,7 +1008,8 @@
 #define Z_CLEARANCE_DEPLOY_PROBE      1 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES    1 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     0.2 // Z Clearance between multiple probes
-#define Z_AFTER_PROBING              20 // Z position after probing is done
+
+#define HOME_AFTER_PROBING
 
 #define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
 
@@ -1372,7 +1373,7 @@
 #endif
 
 // Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (60*60)
+#define HOMING_FEEDRATE_XY (40*60)
 #define HOMING_FEEDRATE_Z  (20*60)
 
 // Validate that endstops are triggered on homing moves

@@ -205,7 +205,7 @@
 #elif defined(MIN_Z_HEIGHT_FOR_HOMING)
   #error "MIN_Z_HEIGHT_FOR_HOMING is now Z_HOMING_HEIGHT. Please update your configuration."
 #elif defined(Z_RAISE_BEFORE_PROBING) || defined(Z_RAISE_AFTER_PROBING)
-  #error "Z_RAISE_(BEFORE|AFTER)_PROBING are deprecated. Use Z_CLEARANCE_DEPLOY_PROBE and Z_AFTER_PROBING instead."
+  #error "Z_RAISE_(BEFORE|AFTER)_PROBING are deprecated. Use Z_CLEARANCE_DEPLOY_PROBE and HOME_AFTER_PROBING instead."
 #elif defined(Z_RAISE_PROBE_DEPLOY_STOW) || defined(Z_RAISE_BETWEEN_PROBINGS)
   #error "Z_RAISE_PROBE_DEPLOY_STOW and Z_RAISE_BETWEEN_PROBINGS are now Z_CLEARANCE_DEPLOY_PROBE and Z_CLEARANCE_BETWEEN_PROBES. Please update your configuration."
 #elif defined(Z_PROBE_DEPLOY_HEIGHT) || defined(Z_PROBE_TRAVEL_HEIGHT)
@@ -1189,8 +1189,8 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
       #error "TOUCH_MI_PROBE requires Z_SAFE_HOMING."
     #elif !defined(TOUCH_MI_RETRACT_Z)
       #error "TOUCH_MI_PROBE requires TOUCH_MI_RETRACT_Z."
-    #elif defined(Z_AFTER_PROBING)
-      #error "TOUCH_MI_PROBE requires Z_AFTER_PROBING to be disabled."
+    #elif defined(HOME_AFTER_PROBING)
+      #error "TOUCH_MI_PROBE requires HOME_AFTER_PROBING to be disabled."
     #elif Z_HOMING_HEIGHT < 10
       #error "TOUCH_MI_PROBE requires Z_HOMING_HEIGHT >= 10."
     #elif Z_MIN_PROBE_ENDSTOP_INVERTING
@@ -1248,8 +1248,6 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
     #error "Probes need Z_CLEARANCE_DEPLOY_PROBE >= 0."
   #elif Z_CLEARANCE_BETWEEN_PROBES < 0
     #error "Probes need Z_CLEARANCE_BETWEEN_PROBES >= 0."
-  #elif Z_AFTER_PROBING < 0
-    #error "Probes need Z_AFTER_PROBING >= 0."
   #endif
 
   #if MULTIPLE_PROBING || EXTRA_PROBING

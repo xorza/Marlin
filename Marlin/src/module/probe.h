@@ -80,8 +80,8 @@ public:
 
     #endif
 
-    #ifdef Z_AFTER_PROBING
-      static void move_z_after_probing();
+    #ifdef HOME_AFTER_PROBING
+      static void move_home_after_probing();
     #endif
     static float probe_at_point(const float &rx, const float &ry, const ProbePtRaise raise_after=PROBE_PT_NONE, const uint8_t verbose_level=0, const bool probe_relative=true, const bool sanity_check=true);
     static inline float probe_at_point(const xy_pos_t &pos, const ProbePtRaise raise_after=PROBE_PT_NONE, const uint8_t verbose_level=0, const bool probe_relative=true, const bool sanity_check=true) {
