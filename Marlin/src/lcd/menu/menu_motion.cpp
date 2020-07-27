@@ -310,7 +310,6 @@ void menu_move() {
     #endif
 
     SUBMENU(MSG_MOVE_Z_1MM, []{ _move_with_scale(Z_AXIS, lcd_move_z, -1, 1.0f); });
-    SUBMENU(MSG_MOVE_Z_SMALL, []{ _move_with_scale(Z_AXIS, lcd_move_z, -1, SHORT_MANUAL_Z_MOVE); });
   }
   else
     GCODES_ITEM(MSG_AUTO_HOME, G28_STR);
