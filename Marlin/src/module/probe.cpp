@@ -436,7 +436,8 @@ bool Probe::set_deployed(const bool deploy) {
 #ifdef HOME_AFTER_PROBING
   // After probing move to a preferred Z position
   void Probe::move_home_after_probing() {
-    do_blocking_move_to(0.0f, 0.0f, 0.0f);    
+    do_blocking_move_to(0.0f, 0.0f, 0.0f);
+    current_position.set(0.0f, 0.0f, 0.0f, current_position.e);
   }
 #endif
 
