@@ -483,9 +483,9 @@
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-#define DEFAULT_Kp 19.35
-#define DEFAULT_Ki 1.76
-#define DEFAULT_Kd 53.18
+#define DEFAULT_Kp 18.21
+#define DEFAULT_Ki 1.38
+#define DEFAULT_Kd 60.01
 
   // Ultimaker
   // #define DEFAULT_Kp 22.2
@@ -537,9 +537,9 @@
   //#define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
-#define  DEFAULT_bedKp 126.13
-#define  DEFAULT_bedKi 4.30
-#define  DEFAULT_bedKd 924.76
+#define DEFAULT_bedKp 40.54
+#define DEFAULT_bedKi 1.97
+#define DEFAULT_bedKd 554.81
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
@@ -758,11 +758,11 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 1200, 1200, 200, 5000 }
+#define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 500, 5000 }
 
 #define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
-  #define MAX_ACCEL_EDIT_VALUES       { 1200, 1200, 200, 5000 } // ...or, set your own edit limits
+  #define MAX_ACCEL_EDIT_VALUES       { 2000, 2000, 500, 5000 } // ...or, set your own edit limits
 #endif
 
 /**
