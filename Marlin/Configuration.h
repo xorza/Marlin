@@ -489,9 +489,9 @@
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-#define DEFAULT_Kp 18.21
-#define DEFAULT_Ki 1.38
-#define DEFAULT_Kd 60.01
+#define DEFAULT_Kp 16.59
+#define DEFAULT_Ki 1.25
+#define DEFAULT_Kd 55.02
 
   // Ultimaker
   // #define DEFAULT_Kp 22.2
@@ -543,9 +543,9 @@
   //#define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
-#define DEFAULT_bedKp 40.54
-#define DEFAULT_bedKi 1.97
-#define DEFAULT_bedKd 554.81
+  #define DEFAULT_bedKp 42.42
+  #define DEFAULT_bedKi 2.11
+  #define DEFAULT_bedKd 567.89
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
