@@ -357,7 +357,7 @@ void menu_motion() {
 
     if (!g29_in_progress) {
       SUBMENU(MSG_ZPROBE_ZOFFSET, lcd_babystep_zoffset);
-      SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
+      GCODES_ITEM(MSG_LEVEL_BED, PSTR("G28\nG29"));
     }
 
   #elif HAS_LEVELING && DISABLED(SLIM_LCD_MENUS)
