@@ -191,7 +191,6 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
     BACK_ITEM(MSG_HOTEND_TOO_COLD);
   else {
     BACK_ITEM(MSG_MOVE_AXIS);
-
     SUBMENU(MSG_MOVE_10MM, []{ _goto_manual_move(10);    });
     SUBMENU(MSG_MOVE_1MM,  []{ _goto_manual_move( 1);    });
     SUBMENU(MSG_MOVE_01MM, []{ _goto_manual_move( 0.1f); });
@@ -209,21 +208,6 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
     }
   }
   END_MENU();
-}
-
-void _move_with_scale(const AxisEnum axis, const screenFunc_t func, const int8_t eindex, const float move_scale) {
-  _manual_move_func_ptr = func;
-
-  #if ENABLED(PREVENT_COLD_EXTRUSION)
-    if (axis == E_AXIS && thermalManager.tooColdToExtrude(eindex >= 0 ? eindex : active_extruder)) {
-      START_MENU();
-      BACK_ITEM(MSG_HOTEND_TOO_COLD);
-      END_MENU();
-      return;
-    }
-  #endif
-
-  _goto_manual_move(move_scale);
 }
 
 void menu_move() {
@@ -371,19 +355,9 @@ void menu_motion() {
 
   #elif ENABLED(LCD_BED_LEVELING)
 
-    if (!g29_in_progress) 
-    {
-      #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-        SUBMENU(MSG_ZPROBE_ZOFFSET, lcd_babystep_zoffset);
-      #endif
-      //SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
-      #if EITHER(PROBE_MANUALLY, MESH_BED_LEVELING)
-        // Manual leveling uses a guided procedure
-        SUBMENU(MSG_LEVEL_BED, _lcd_level_bed_continue);
-      #else
-        // Automatic leveling can just run the G-code
-        GCODES_ITEM(MSG_LEVEL_BED, PSTR("G28\nG29"));
-      #endif
+    if (!g29_in_progress) {
+      SUBMENU(MSG_ZPROBE_ZOFFSET, lcd_babystep_zoffset);
+      SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
     }
 
   #elif HAS_LEVELING && DISABLED(SLIM_LCD_MENUS)
@@ -416,10 +390,6 @@ void menu_motion() {
   // Disable Steppers
   //
   GCODES_ITEM(MSG_DISABLE_STEPPERS, PSTR("M84"));
-
-  #if HAS_SOFTWARE_ENDSTOPS && ENABLED(SOFT_ENDSTOPS_MENU_ITEM)
-    EDIT_ITEM(bool, MSG_LCD_SOFT_ENDSTOPS, &soft_endstops_enabled);
-  #endif
 
   END_MENU();
 }

@@ -28,9 +28,8 @@
 #include "../../module/planner.h"
 #include "../../module/motion.h"
 #include "../../module/printcounter.h"
-#include "../../gcode/queue.h"
-
 #include "../../module/configuration_store.h"
+#include "../../gcode/queue.h"
 
 #if HAS_BUZZER
   #include "../../libs/buzzer.h"

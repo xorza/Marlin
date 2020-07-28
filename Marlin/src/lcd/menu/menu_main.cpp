@@ -150,27 +150,6 @@ void menu_main() {
     if (TERN0(MACHINE_CAN_PAUSE, printingIsPaused()))
       ACTION_ITEM(MSG_RESUME_PRINT, ui.resume_print);
 
-    if (card_detected) {
-      if (!card_open) {
-        // MENU_ITEM(gcode,
-        //   #if PIN_EXISTS(SD_DETECT)
-        //     MSG_CHANGE_MEDIA, M21_STR
-        //   #else
-        //     MSG_RELEASE_MEDIA, PSTR("M22")
-        //   #endif
-        // );
-        SUBMENU(MSG_MEDIA_MENU, menu_media);
-      }
-    }
-    else {
-      #if PIN_EXISTS(SD_DETECT)
-        ACTION_ITEM(MSG_NO_MEDIA, nullptr);
-      #else
-        GCODES_ITEM(MSG_ATTACH_MEDIA, M21_STR);
-        ACTION_ITEM(MSG_MEDIA_RELEASED, nullptr);
-      #endif
-    }
-
     SUBMENU(MSG_MOTION, menu_motion);
   }
 
