@@ -210,25 +210,40 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
   END_MENU();
 }
 
+void _move_with_scale(const AxisEnum axis, const screenFunc_t func, const int8_t eindex, const float move_scale) {
+  _manual_move_func_ptr = func;
+
+  #if ENABLED(PREVENT_COLD_EXTRUSION)
+    if (axis == E_AXIS && thermalManager.tooColdToExtrude(eindex >= 0 ? eindex : active_extruder)) {
+      START_MENU();
+      BACK_ITEM(MSG_HOTEND_TOO_COLD);
+      END_MENU();
+      return;
+    }
+  #endif
+
+  _goto_manual_move(move_scale);
+}
+
 void menu_move() {
   START_MENU();
   BACK_ITEM(MSG_MOTION);
 
-  #if BOTH(HAS_SOFTWARE_ENDSTOPS, SOFT_ENDSTOPS_MENU_ITEM)
-    EDIT_ITEM(bool, MSG_LCD_SOFT_ENDSTOPS, &soft_endstops_enabled);
-  #endif
+  // #if BOTH(HAS_SOFTWARE_ENDSTOPS, SOFT_ENDSTOPS_MENU_ITEM)
+  //   EDIT_ITEM(bool, MSG_LCD_SOFT_ENDSTOPS, &soft_endstops_enabled);
+  // #endif
 
   if (NONE(IS_KINEMATIC, NO_MOTION_BEFORE_HOMING) || all_axes_homed()) {
     if (TERN1(DELTA, current_position.z <= delta_clip_start_height)) {
-      SUBMENU(MSG_MOVE_X, []{ _menu_move_distance(X_AXIS, lcd_move_x); });
-      SUBMENU(MSG_MOVE_Y, []{ _menu_move_distance(Y_AXIS, lcd_move_y); });
+      SUBMENU(MSG_MOVE_X, []{ _move_with_scale(X_AXIS, lcd_move_x, -1, 1.0f); });
+      SUBMENU(MSG_MOVE_Y, []{ _move_with_scale(Y_AXIS, lcd_move_y, -1, 1.0f); });
     }
     #if ENABLED(DELTA)
       else
         ACTION_ITEM(MSG_FREE_XY, []{ line_to_z(delta_clip_start_height); ui.synchronize(); });
     #endif
 
-    SUBMENU(MSG_MOVE_Z, []{ _menu_move_distance(Z_AXIS, lcd_move_z); });
+    SUBMENU(MSG_MOVE_Z, []{ _move_with_scale(Z_AXIS, lcd_move_z, -1, 1.0f); });
   }
   else
     GCODES_ITEM(MSG_AUTO_HOME, G28_STR);
@@ -384,6 +399,10 @@ void menu_motion() {
 
   #if ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST)
     GCODES_ITEM(MSG_M48_TEST, PSTR("G28\nM48 P10"));
+  #endif
+
+  #if BOTH(HAS_SOFTWARE_ENDSTOPS, SOFT_ENDSTOPS_MENU_ITEM)
+    EDIT_ITEM(bool, MSG_LCD_SOFT_ENDSTOPS, &soft_endstops_enabled);
   #endif
 
   //
