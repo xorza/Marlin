@@ -30,6 +30,8 @@
 #include "../../module/printcounter.h"
 #include "../../gcode/queue.h"
 
+#include "../../module/configuration_store.h"
+
 #if HAS_BUZZER
   #include "../../libs/buzzer.h"
 #endif
