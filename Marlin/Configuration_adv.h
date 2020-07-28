@@ -2496,7 +2496,8 @@
   #define SENSORLESS_HOMING // StallGuard capable drivers only
 
   #if ENABLED(SENSORLESS_HOMING)
-	#define HOMING_BUMP_MM      { 0, 0, 2 }       // (mm) Backoff from endstops after first bump
+    #undef HOMING_BUMP_MM
+    #define HOMING_BUMP_MM      { 0, 0, 2 }       // (mm) Backoff from endstops after first bump
   #endif
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
