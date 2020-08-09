@@ -287,7 +287,7 @@ void menu_move() {
   #if E_MANUAL
 
     // The current extruder
-    SUBMENU(MSG_MOVE_E, []{ _menu_move_distance(E_AXIS, []{ lcd_move_e(); }, -1); });
+    SUBMENU(MSG_MOVE_E, []{ _move_with_scale(E_AXIS, []{ lcd_move_e(); }, -1, 1.0f); });
 
     #define SUBMENU_MOVE_E(N) SUBMENU_N(N, MSG_MOVE_EN, []{ _menu_move_distance(E_AXIS, []{ lcd_move_e(MenuItemBase::itemIndex); }, MenuItemBase::itemIndex); });
 
