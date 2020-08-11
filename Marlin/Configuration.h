@@ -489,9 +489,9 @@
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-#define DEFAULT_Kp 16.59
-#define DEFAULT_Ki 1.25
-#define DEFAULT_Kd 55.02
+  #define DEFAULT_Kp 23.09
+  #define DEFAULT_Ki 2.28
+  #define DEFAULT_Kd 58.39
 
   // Ultimaker
   // #define DEFAULT_Kp 22.2
@@ -762,11 +762,11 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 180, 180, 20, 100 }
+#define DEFAULT_MAX_FEEDRATE          { 180, 180, 20, 70 }
 
 #define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 180, 180, 20, 100 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    { 180, 180, 20, 70 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -1509,17 +1509,17 @@
 #define PREHEAT_1_LABEL       "PLA"
 #define PREHEAT_1_TEMP_HOTEND 220
 #define PREHEAT_1_TEMP_BED     60
-#define PREHEAT_1_FAN_SPEED    32 // Value from 0 to 255
+#define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "PETG"
 #define PREHEAT_2_TEMP_HOTEND 255
 #define PREHEAT_2_TEMP_BED     85
-#define PREHEAT_2_FAN_SPEED    32 // Value from 0 to 255
+#define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_3_LABEL       "ABS"
 #define PREHEAT_3_TEMP_HOTEND 255
 #define PREHEAT_3_TEMP_BED     90
-#define PREHEAT_3_FAN_SPEED    32 // Value from 0 to 255
+#define PREHEAT_3_FAN_SPEED     0 // Value from 0 to 255
 
 /**
  * Nozzle Park
