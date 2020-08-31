@@ -489,9 +489,9 @@
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-  #define DEFAULT_Kp 23.09
-  #define DEFAULT_Ki 2.28
-  #define DEFAULT_Kd 58.39
+  #define DEFAULT_Kp 19.95
+  #define DEFAULT_Ki 1.77
+  #define DEFAULT_Kd 56.11
 
   // Ultimaker
   // #define DEFAULT_Kp 22.2
@@ -762,11 +762,11 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 75, 75 }
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, 70, 70 }
 
 #define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 300, 300, 75, 75 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    { 300, 300, 70, 70 } // ...or, set your own edit limits
 #endif
 
 /**

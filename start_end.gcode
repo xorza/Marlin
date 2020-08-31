@@ -19,9 +19,8 @@ G28 W ; home all without mesh bed level
 G80 ; mesh bed leveling
 
 G92 E0.0 ; reset extruder distance position
-G1 X0.0 Y0.0 Z0.3 F3000.0 ; go outside print area
+G1 X0.0 Y0.0 Z0.3 F6000.0 ; go outside print area
 G1 X160.0 E50.0 F1000.0 ; intro line
-
 G92 E0.0 ; reset extruder distance position
 
 
