@@ -28,7 +28,7 @@
 
 #if HAS_LCD_MENU
 
-#include "menu.h"
+#include "menu_item.h"
 #include "../../module/temperature.h"
 #include "../../gcode/queue.h"
 #include "../../module/printcounter.h"
@@ -48,6 +48,10 @@
 
 #if ENABLED(PRUSA_MMU2)
   #include "../../lcd/menu/menu_mmu2.h"
+#endif
+
+#if ENABLED(PASSWORD_FEATURE)
+  #include "../../feature/password/password.h"
 #endif
 
 void menu_tune();
@@ -133,14 +137,12 @@ void menu_main() {
 
       if (card_detected) {
         if (!card_open) {
-          SUBMENU(MSG_MEDIA_MENU, menu_media);
-          MENU_ITEM(gcode,
-            #if PIN_EXISTS(SD_DETECT)
-              MSG_CHANGE_MEDIA, M21_STR
-            #else
-              MSG_RELEASE_MEDIA, PSTR("M22")
-            #endif
-          );
+          SUBMENU(MSG_MEDIA_MENU, TERN(PASSWORD_ON_SD_PRINT_MENU, password.media_gatekeeper, menu_media));
+          #if PIN_EXISTS(SD_DETECT)
+            GCODES_ITEM(MSG_CHANGE_MEDIA, M21_STR);
+          #else
+            GCODES_ITEM(MSG_RELEASE_MEDIA, PSTR("M22"));
+          #endif
         }
       }
       else {
@@ -153,42 +155,39 @@ void menu_main() {
 
     #endif // !HAS_ENCODER_WHEEL && SDSUPPORT
 
-    #if BOTH(HAS_ENCODER_WHEEL, SDSUPPORT)
+  #if BOTH(HAS_ENCODER_WHEEL, SDSUPPORT)
 
-      if (!busy) {
+    if (!busy) {
 
-        // *** IF THIS SECTION IS CHANGED, REPRODUCE ABOVE ***
+      // *** IF THIS SECTION IS CHANGED, REPRODUCE ABOVE ***
 
-        //
-        // Autostart
-        //
-        #if ENABLED(MENU_ADDAUTOSTART)
-          ACTION_ITEM(MSG_AUTOSTART, card.beginautostart);
-        #endif
+      //
+      // Autostart
+      //
+      #if ENABLED(MENU_ADDAUTOSTART)
+        ACTION_ITEM(MSG_AUTOSTART, card.beginautostart);
+      #endif
 
-        if (card_detected) {
-          if (!card_open) {
-            // MENU_ITEM(gcode,
-            //   #if PIN_EXISTS(SD_DETECT)
-            //     MSG_CHANGE_MEDIA, M21_STR
-            //   #else
-            //     MSG_RELEASE_MEDIA, PSTR("M22")
-            //   #endif
-            // );
-            SUBMENU(MSG_MEDIA_MENU, menu_media);
-          }
-        }
-        else {
+      if (card_detected) {
+        if (!card_open) {
           #if PIN_EXISTS(SD_DETECT)
-            ACTION_ITEM(MSG_NO_MEDIA, nullptr);
+            //GCODES_ITEM(MSG_CHANGE_MEDIA, M21_STR);
           #else
-            //GCODES_ITEM(MSG_ATTACH_MEDIA, M21_STR);
+            //GCODES_ITEM(MSG_RELEASE_MEDIA, PSTR("M22"));
           #endif
+          SUBMENU(MSG_MEDIA_MENU, TERN(PASSWORD_ON_SD_PRINT_MENU, password.media_gatekeeper, menu_media));
         }
       }
+      else {
+        #if PIN_EXISTS(SD_DETECT)
+          ACTION_ITEM(MSG_NO_MEDIA, nullptr);
+        #else
+          //GCODES_ITEM(MSG_ATTACH_MEDIA, M21_STR);
+        #endif
+      }
+    }
 
-    #endif // HAS_ENCODER_WHEEL && SDSUPPORT
-
+  #endif // HAS_ENCODER_WHEEL && SDSUPPORT
 
 
     if (TERN0(MACHINE_CAN_PAUSE, printingIsPaused()))
@@ -206,7 +205,7 @@ void menu_main() {
   #endif
 
   #if HAS_POWER_MONITOR
-    MENU_ITEM(submenu, MSG_POWER_MONITOR, menu_power_monitor);
+    SUBMENU(MSG_POWER_MONITOR, menu_power_monitor);
   #endif
 
   #if ENABLED(MIXING_EXTRUDER)
