@@ -460,6 +460,7 @@ void startOrResumeJob() {
     #ifdef EVENT_GCODE_SD_ABORT
       queue.inject_P(PSTR(EVENT_GCODE_SD_ABORT));
     #endif
+    queue.inject_P(PSTR("M18"));
 
     TERN_(PASSWORD_AFTER_SD_PRINT_ABORT, password.lock_machine());
   }
