@@ -458,14 +458,19 @@ void startOrResumeJob() {
     wait_for_heatup = false;
     TERN_(POWER_LOSS_RECOVERY, recovery.purge());
     #ifdef EVENT_GCODE_SD_ABORT
-      queue.inject_P(PSTR(EVENT_GCODE_SD_ABORT));
+      queue.enqueue_one_now(PSTR(EVENT_GCODE_SD_ABORT));
     #endif
-    queue.inject_P(PSTR("M18"));
+    queue.enqueue_one_now(PSTR("M18"));
 
     TERN_(PASSWORD_AFTER_SD_PRINT_ABORT, password.lock_machine());
   }
 
   inline void finishSDPrinting() {
+    #ifdef EVENT_GCODE_SD_ABORT
+      queue.enqueue_one_now(PSTR(EVENT_GCODE_SD_ABORT));
+    #endif
+    queue.enqueue_one_now(PSTR("M18"));
+
     if (queue.enqueue_one_P(PSTR("M1001"))) {
       marlin_state = MF_RUNNING;
       TERN_(PASSWORD_AFTER_SD_PRINT_END, password.lock_machine());
