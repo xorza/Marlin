@@ -83,10 +83,11 @@
  *   Flags that the position is known in each linear axis. Set when homed.
  *   Cleared whenever a stepper powers off, potentially losing its position.
  */
-uint8_t axis_homed, axis_known_position; // = 0
+uint8_t axis_homed = 0;
+uint8_t axis_known_position = 0;
 
 // Relative Mode. Enable with G91, disable with G90.
-bool relative_mode; // = false;
+bool relative_mode = false;
 
 /**
  * Cartesian Current Position
