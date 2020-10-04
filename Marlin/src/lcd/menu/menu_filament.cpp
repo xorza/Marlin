@@ -55,15 +55,27 @@ inline PGM_P _change_filament_command() {
 }
 
 // Initiate Filament Load/Unload/Change at the specified temperature
-static void _change_filament_with_temp(const uint16_t celsius) {
+static void _change_filament_with_temp(const uint16_t celsius_e, const uint16_t celsius_hb) {
+  thermalManager.setTargetHotend(celsius_e, _change_filament_extruder);
+  thermalManager.setTargetBed(celsius_hb);
+
   char cmd[11];
   sprintf_P(cmd, _change_filament_command(), _change_filament_extruder);
-  thermalManager.setTargetHotend(celsius, _change_filament_extruder);
   queue.inject(cmd);
 }
 
+// Initiate Filament Load/Unload/Change at the specified temperature
+static void _change_filament_with_temp(const uint16_t celsius_e) {
+  thermalManager.setTargetHotend(celsius_e, _change_filament_extruder);
+    
+  char cmd[11];
+  sprintf_P(cmd, _change_filament_command(), _change_filament_extruder);
+  queue.inject(cmd);
+}
+
+
 static void _change_filament_with_preset() {
-  _change_filament_with_temp(ui.material_preset[MenuItemBase::itemIndex].hotend_temp);
+  _change_filament_with_temp(ui.material_preset[MenuItemBase::itemIndex].hotend_temp, ui.material_preset[MenuItemBase::itemIndex].bed_temp);
 }
 
 static void _change_filament_with_custom() {
