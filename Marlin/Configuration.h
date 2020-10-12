@@ -1504,12 +1504,12 @@
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "PETG"
-#define PREHEAT_2_TEMP_HOTEND 255
+#define PREHEAT_2_TEMP_HOTEND 250
 #define PREHEAT_2_TEMP_BED     85
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_3_LABEL       "ABS"
-#define PREHEAT_3_TEMP_HOTEND 255
+#define PREHEAT_3_TEMP_HOTEND 250
 #define PREHEAT_3_TEMP_BED     90
 #define PREHEAT_3_FAN_SPEED     0 // Value from 0 to 255
 
