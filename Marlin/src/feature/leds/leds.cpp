@@ -72,7 +72,7 @@ void LEDLights::setup() {
 
 void LEDLights::set_color(const LEDColor &incol
   #if ENABLED(NEOPIXEL_LED)
-    , float progress/*=false*/
+    , bool isSequence/*=false*/
   #endif
 ) {
 
@@ -81,19 +81,21 @@ void LEDLights::set_color(const LEDColor &incol
     const uint32_t neocolor = LEDColorWhite() == incol
                             ? neo.Color(NEO_WHITE)
                             : neo.Color(incol.r, incol.g, incol.b, incol.w);
-    neo.set_brightness(incol.i);
+    static uint16_t nextLed = 0;
 
-    if (progress < 1.0f) {
-      const uint16_t nextLed = static_cast<uint16_t>(progress * neo.pixels());
-
-      #ifdef NEOPIXEL_BKGD_LED_INDEX
+    #ifdef NEOPIXEL_BKGD_LED_INDEX
       if (NEOPIXEL_BKGD_LED_INDEX == nextLed) {
+        if (++nextLed >= neo.pixels()) nextLed = 0;
         return;
       }
-      #endif
+    #endif
 
+    neo.set_brightness(incol.i);
+
+    if (isSequence) {
       neo.set_pixel_color(nextLed, neocolor);
       neo.show();
+      if (++nextLed >= neo.pixels()) nextLed = 0;
       return;
     }
 
