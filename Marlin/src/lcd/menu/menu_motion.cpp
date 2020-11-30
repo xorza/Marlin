@@ -192,22 +192,13 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
 void _move_with_scale(const AxisEnum axis, const screenFunc_t func, const int8_t eindex, const float move_scale) {
   _manual_move_func_ptr = func;
 
-  #if ENABLED(PREVENT_COLD_EXTRUSION)
-    if (axis == E_AXIS && thermalManager.tooColdToExtrude(eindex >= 0 ? eindex : active_extruder)) {
-      START_MENU();
-      BACK_ITEM(MSG_HOTEND_TOO_COLD);
-      END_MENU();
-      return;
-    }
-  #endif
-
   _goto_manual_move(move_scale);
 }
 
 #if E_MANUAL
 
   inline void _goto_menu_move_distance_e() {
-    ui.goto_screen([]{ _menu_move_distance(E_AXIS, []{ lcd_move_e(TERN_(MULTI_MANUAL, active_extruder)); }, -1); });
+    ui.goto_screen([]{ _move_with_scale(E_AXIS, []{ lcd_move_e(); }, -1, 5.0f); });
   }
 
   inline void _menu_move_distance_e_maybe() {
@@ -239,15 +230,15 @@ void menu_move() {
 
   if (NONE(IS_KINEMATIC, NO_MOTION_BEFORE_HOMING) || all_axes_homed()) {
     if (TERN1(DELTA, current_position.z <= delta_clip_start_height)) {
-      SUBMENU(MSG_MOVE_X, []{ _move_with_scale(X_AXIS, lcd_move_x, -1, 1.0f); });
-      SUBMENU(MSG_MOVE_Y, []{ _move_with_scale(Y_AXIS, lcd_move_y, -1, 1.0f); });
+      SUBMENU(MSG_MOVE_X, []{ _move_with_scale(X_AXIS, lcd_move_x, -1, 5.0f); });
+      SUBMENU(MSG_MOVE_Y, []{ _move_with_scale(Y_AXIS, lcd_move_y, -1, 5.0f); });
     }
     #if ENABLED(DELTA)
       else
         ACTION_ITEM(MSG_FREE_XY, []{ line_to_z(delta_clip_start_height); ui.synchronize(); });
     #endif
 
-    SUBMENU(MSG_MOVE_Z, []{ _move_with_scale(Z_AXIS, lcd_move_z, -1, 1.0f); });
+    SUBMENU(MSG_MOVE_Z, []{ _move_with_scale(Z_AXIS, lcd_move_z, -1, 5.0f); });
   }
   else
     GCODES_ITEM(MSG_AUTO_HOME, G28_STR);
@@ -291,7 +282,6 @@ void menu_move() {
   #if E_MANUAL
 
     // The current extruder
-    SUBMENU(MSG_MOVE_E, []{ _move_with_scale(E_AXIS, []{ lcd_move_e(); }, -1, 1.0f); });
     SUBMENU(MSG_MOVE_E, []{ _menu_move_distance_e_maybe(); });
 
     #define SUBMENU_MOVE_E(N) SUBMENU_N(N, MSG_MOVE_EN, []{ _menu_move_distance(E_AXIS, []{ lcd_move_e(MenuItemBase::itemIndex); }, MenuItemBase::itemIndex); });
