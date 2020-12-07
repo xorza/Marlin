@@ -33,6 +33,14 @@
   #include "../feature/power.h"
 #endif
 
+#if ENABLED(AUTO_POWER_CONTROL)
+  #include "../feature/hotend_idle.h"
+#endif
+
+#if ENABLED(HOTEND_IDLE_TIMEOUT)
+  #include "../feature/hotend_idle.h"
+#endif
+
 #ifndef SOFT_PWM_SCALE
   #define SOFT_PWM_SCALE 0
 #endif
@@ -598,6 +606,8 @@ class Temperature {
         TERN_(AUTO_POWER_CONTROL, if (celsius) powerManager.power_on());
         temp_hotend[ee].target = _MIN(celsius, temp_range[ee].maxtemp - HOTEND_OVERSHOOT);
         start_watching_hotend(ee);
+
+        TERN_(HOTEND_IDLE_TIMEOUT, hotend_idle.reset_timeout());
       }
 
       FORCE_INLINE static bool isHeatingHotend(const uint8_t E_NAME) {
@@ -652,6 +662,8 @@ class Temperature {
           #endif
         ;
         start_watching_bed();
+
+        TERN_(HOTEND_IDLE_TIMEOUT, hotend_idle.reset_timeout());
       }
 
       static bool wait_for_bed(const bool no_wait_for_cooling=true

@@ -26,6 +26,7 @@
 class HotendIdleProtection {
 public:
   static void check();
+  static void reset_timeout();
 private:
   static constexpr millis_t hp_interval = SEC_TO_MS(HOTEND_IDLE_TIMEOUT_SEC);
   static millis_t next_protect_ms;

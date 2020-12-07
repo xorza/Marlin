@@ -71,6 +71,10 @@ void HotendIdleProtection::check() {
     timed_out();
 }
 
+void HotendIdleProtection::reset_timeout() {
+  next_protect_ms = millis() + hp_interval; 
+}
+
 // Lower (but don't raise) hotend / bed temperatures
 void HotendIdleProtection::timed_out() {
   next_protect_ms = 0;
