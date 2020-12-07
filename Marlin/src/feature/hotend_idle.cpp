@@ -71,7 +71,7 @@ void HotendIdleProtection::check() {
     timed_out();
 }
 
-void HotendIdleProtection::reset_timeout() {
+void HotendIdleProtection::reset() {
   next_protect_ms = millis() + hp_interval; 
 }
 

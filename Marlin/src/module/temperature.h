@@ -607,7 +607,7 @@ class Temperature {
         temp_hotend[ee].target = _MIN(celsius, temp_range[ee].maxtemp - HOTEND_OVERSHOOT);
         start_watching_hotend(ee);
 
-        TERN_(HOTEND_IDLE_TIMEOUT, hotend_idle.reset_timeout());
+        TERN_(HOTEND_IDLE_TIMEOUT, hotend_idle.reset());
       }
 
       FORCE_INLINE static bool isHeatingHotend(const uint8_t E_NAME) {
@@ -663,7 +663,7 @@ class Temperature {
         ;
         start_watching_bed();
 
-        TERN_(HOTEND_IDLE_TIMEOUT, hotend_idle.reset_timeout());
+        TERN_(HOTEND_IDLE_TIMEOUT, hotend_idle.reset());
       }
 
       static bool wait_for_bed(const bool no_wait_for_cooling=true
