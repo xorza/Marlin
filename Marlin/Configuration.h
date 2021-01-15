@@ -743,7 +743,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 415 * 95 / 100 } 
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 415 } 
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1648,7 +1648,7 @@
  *
  * View the current statistics with M78.
  */
-// #define PRINTCOUNTER
+ #define PRINTCOUNTER
 
 /**
  * Password
