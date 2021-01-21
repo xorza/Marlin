@@ -430,7 +430,7 @@
  *
  * Define one or both of these to override the default 0-255 range.
  */
-#define FAN_MIN_PWM 16
+#define FAN_MIN_PWM 12
 #define FAN_MAX_PWM 160
 
 /**
@@ -1171,7 +1171,7 @@
   #define SD_PROCEDURE_DEPTH 1              // Increase if you need more nested M32 calls
 
   #define SD_FINISHED_STEPPERRELEASE true   // Disable steppers when SD Print is finished
-  #define SD_FINISHED_RELEASECOMMAND "G92 E0.0\nM140 S0\nM104 S0\nM107\nG27 P2\nM84\nG90"  // Use "M84XYE" to keep Z enabled so your bed stays in place
+  #define SD_FINISHED_RELEASECOMMAND "G90\nG92 E0.0\nG1 E-10.0\nM140 S0\nM104 S0\nM107\nG27 P2\nM84\nG90"  // Use "M84XYE" to keep Z enabled so your bed stays in place
 
   // Reverse SD sort to show "more recent" files first, according to the card's FAT.
   // Since the FAT gets out of order with usage, SDCARD_SORT_ALPHA is recommended.
