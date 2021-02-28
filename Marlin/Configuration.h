@@ -743,7 +743,28 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 50, 50, 200, 205 } 
+
+#define  X_MICROSTEPS           8        // 0..256
+#define  Y_MICROSTEPS           8
+#define  Z_MICROSTEPS           8
+#define E0_MICROSTEPS           8
+#define  X_DEGREES_PER_STEP     1.8
+#define  Y_DEGREES_PER_STEP     1.8
+#define  Z_DEGREES_PER_STEP     1.8
+#define E0_DEGREES_PER_STEP     1.8
+#define  X_DEGREES_PER_UNIT    11.25
+#define  Y_DEGREES_PER_UNIT    11.25
+#define  Z_DEGREES_PER_UNIT    45.0
+#define E0_DEGREES_PER_UNIT    46.6875
+
+#define DEFAULT_AXIS_MICROSTEPS_PER_UNIT { \
+  X_MICROSTEPS * X_DEGREES_PER_UNIT / X_DEGREES_PER_STEP, \
+  Y_MICROSTEPS * Y_DEGREES_PER_UNIT / Y_DEGREES_PER_STEP, \
+  Z_MICROSTEPS * Z_DEGREES_PER_UNIT / Z_DEGREES_PER_STEP, \
+  E0_MICROSTEPS * E0_DEGREES_PER_UNIT / E0_DEGREES_PER_STEP, \
+}
+
+
 
 /**
  * Default Max Feed Rate (mm/s)
