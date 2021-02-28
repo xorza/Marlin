@@ -2327,6 +2327,7 @@ void MarlinSettings::postprocess() {
     if (validate()) {
       const bool success = _load();
       TERN_(EXTENSIBLE_UI, ExtUI::onConfigurationStoreRead(success));
+      reset();
       return success;
     }
     reset();
@@ -2559,7 +2560,7 @@ void MarlinSettings::reset() {
   TERN_(ENABLE_LEVELING_FADE_HEIGHT, new_z_fade_height = 0.0);
   TERN_(HAS_LEVELING, reset_bed_level());
 
-  #if HAS_BED_PROBE
+  #if HAS_BED_PROBE && false
     constexpr float dpo[] = NOZZLE_TO_PROBE_OFFSET;
     static_assert(COUNT(dpo) == 3, "NOZZLE_TO_PROBE_OFFSET must contain offsets for X, Y, and Z.");
     #if HAS_PROBE_XY_OFFSET
