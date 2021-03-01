@@ -2266,7 +2266,6 @@
   #if AXIS_IS_TMC(X)
     #define X_CURRENT        700        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME   X_CURRENT  // (mA) RMS current for sensorless homing
-    #define X_MICROSTEPS     8    // 0..256
     #define X_RSENSE         0.11
     #define X_CHAIN_POS      -1    // <=0 : Not chained. 1 : MCU MOSI connected. 2 : Next in chain, ...
   #endif
@@ -2280,9 +2279,8 @@
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT       700
+    #define Y_CURRENT       X_CURRENT
     #define Y_CURRENT_HOME  Y_CURRENT
-    #define Y_MICROSTEPS    8
     #define Y_RSENSE        0.11
     #define Y_CHAIN_POS     -1
   #endif
@@ -2298,89 +2296,87 @@
   #if AXIS_IS_TMC(Z)
     #define Z_CURRENT       800
     #define Z_CURRENT_HOME  Z_CURRENT
-    #define Z_MICROSTEPS     8
-    #define Z_RSENSE          0.11
-    #define Z_CHAIN_POS      -1
+    #define Z_RSENSE        0.11
+    #define Z_CHAIN_POS     -1
   #endif
 
   #if AXIS_IS_TMC(Z2)
-    #define Z2_CURRENT      800
+    #define Z2_CURRENT      Z_CURRENT
     #define Z2_CURRENT_HOME Z2_CURRENT
-    #define Z2_MICROSTEPS    16
-    #define Z2_RSENSE         0.11
-    #define Z2_CHAIN_POS     -1
+    #define Z2_MICROSTEPS   Z_MICROSTEPS
+    #define Z2_RSENSE       Z_RSENSE
+    #define Z2_CHAIN_POS    Z_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(Z3)
-    #define Z3_CURRENT      800
-    #define Z3_CURRENT_HOME Z3_CURRENT
-    #define Z3_MICROSTEPS    16
-    #define Z3_RSENSE         0.11
-    #define Z3_CHAIN_POS     -1
+    #define Z3_CURRENT      Z_CURRENT
+    #define Z3_CURRENT_HOME Z2_CURRENT
+    #define Z3_MICROSTEPS   Z_MICROSTEPS
+    #define Z3_RSENSE       Z_RSENSE
+    #define Z3_CHAIN_POS    Z_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(Z4)
-    #define Z4_CURRENT      800
-    #define Z4_CURRENT_HOME Z4_CURRENT
-    #define Z4_MICROSTEPS    16
-    #define Z4_RSENSE         0.11
-    #define Z4_CHAIN_POS     -1
+    #define Z4_CURRENT      Z_CURRENT
+    #define Z4_CURRENT_HOME Z2_CURRENT
+    #define Z4_MICROSTEPS   Z_MICROSTEPS
+    #define Z4_RSENSE       Z_RSENSE
+    #define Z4_CHAIN_POS    Z_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(E0)
     #define E0_CURRENT      500
-    #define E0_MICROSTEPS     8
-    #define E0_RSENSE         0.11
-    #define E0_CHAIN_POS     -1
+    #define E0_RSENSE       0.11
+    #define E0_CHAIN_POS    -1
   #endif
 
   #if AXIS_IS_TMC(E1)
-    #define E1_CURRENT      800
-    #define E1_MICROSTEPS    16
-    #define E1_RSENSE         0.11
-    #define E1_CHAIN_POS     -1
+    #define E1_CURRENT       E0_CURRENT
+    #define E1_MICROSTEPS    E0_MICROSTEPS
+    #define E1_RSENSE        E0_RSENSE
+    #define E1_CHAIN_POS     E0_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(E2)
-    #define E2_CURRENT      800
-    #define E2_MICROSTEPS    16
-    #define E2_RSENSE         0.11
-    #define E2_CHAIN_POS     -1
+    #define E2_CURRENT      E0_CURRENT
+    #define E2_MICROSTEPS   E0_MICROSTEPS
+    #define E2_RSENSE       E0_RSENSE
+    #define E2_CHAIN_POS    E0_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(E3)
-    #define E3_CURRENT      800
-    #define E3_MICROSTEPS    16
-    #define E3_RSENSE         0.11
-    #define E3_CHAIN_POS     -1
+    #define E3_CURRENT      E0_CURRENT
+    #define E3_MICROSTEPS   E0_MICROSTEPS
+    #define E3_RSENSE       E0_RSENSE
+    #define E3_CHAIN_POS    E0_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(E4)
-    #define E4_CURRENT      800
-    #define E4_MICROSTEPS    16
-    #define E4_RSENSE         0.11
-    #define E4_CHAIN_POS     -1
+    #define E4_CURRENT       E0_CURRENT
+    #define E4_MICROSTEPS    E0_MICROSTEPS
+    #define E4_RSENSE        E0_RSENSE
+    #define E4_CHAIN_POS     E0_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(E5)
-    #define E5_CURRENT      800
-    #define E5_MICROSTEPS    16
-    #define E5_RSENSE         0.11
-    #define E5_CHAIN_POS     -1
+    #define E5_CURRENT      E0_CURRENT
+    #define E5_MICROSTEPS   E0_MICROSTEPS
+    #define E5_RSENSE       E0_RSENSE
+    #define E5_CHAIN_POS    E0_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(E6)
-    #define E6_CURRENT      800
-    #define E6_MICROSTEPS    16
-    #define E6_RSENSE         0.11
-    #define E6_CHAIN_POS     -1
+    #define E6_CURRENT      E0_CURRENT
+    #define E6_MICROSTEPS   E0_MICROSTEPS
+    #define E6_RSENSE       E0_RSENSE
+    #define E6_CHAIN_POS    E0_CHAIN_POS
   #endif
 
   #if AXIS_IS_TMC(E7)
-    #define E7_CURRENT      800
-    #define E7_MICROSTEPS    16
-    #define E7_RSENSE         0.11
-    #define E7_CHAIN_POS     -1
+    #define E7_CURRENT      E0_CURRENT
+    #define E7_MICROSTEPS   E0_MICROSTEPS
+    #define E7_RSENSE       E0_RSENSE
+    #define E7_CHAIN_POS    E0_CHAIN_POS
   #endif
 
   /**
@@ -2457,7 +2453,7 @@
    */
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  //#define STEALTHCHOP_E
+  #define STEALTHCHOP_E
 
   /**
    * Optimize spreadCycle chopper parameters by using predefined parameter sets
@@ -2502,7 +2498,7 @@
    * STEALTHCHOP_(XY|Z|E) must be enabled to use HYBRID_THRESHOLD.
    * M913 X/Y/Z/E to live tune the setting
    */
-  #define HYBRID_THRESHOLD
+  // #define HYBRID_THRESHOLD
 
   #define X_HYBRID_THRESHOLD     121  // [mm/s]
   #define X2_HYBRID_THRESHOLD    121

@@ -186,7 +186,7 @@ bool dwin_abort_flag = false; // Flag to reset feedrate, return to Home
 constexpr float default_max_feedrate[]        = DEFAULT_MAX_FEEDRATE;
 constexpr float default_max_acceleration[]    = DEFAULT_MAX_ACCELERATION;
 constexpr float default_max_jerk[]            = { DEFAULT_XJERK, DEFAULT_YJERK, DEFAULT_ZJERK, DEFAULT_EJERK };
-constexpr float default_axis_steps_per_unit[] = DEFAULT_AXIS_STEPS_PER_UNIT;
+constexpr float default_axis_steps_per_unit[] = DEFAULT_AXIS_MICROSTEPS_PER_UNIT;
 
 uint8_t Percentrecord = 0;
 uint16_t remain_time = 0;
