@@ -744,10 +744,10 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 
-#define  X_MICROSTEPS          32        // 0..256
-#define  Y_MICROSTEPS          32
-#define  Z_MICROSTEPS          32
-#define E0_MICROSTEPS          32
+#define  X_MICROSTEPS           8        // 0..256
+#define  Y_MICROSTEPS           8
+#define  Z_MICROSTEPS           8
+#define E0_MICROSTEPS           8
 #define  X_DEGREES_PER_STEP     1.8
 #define  Y_DEGREES_PER_STEP     1.8
 #define  Z_DEGREES_PER_STEP     1.8
