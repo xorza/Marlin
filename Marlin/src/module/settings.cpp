@@ -2330,6 +2330,17 @@ void MarlinSettings::postprocess() {
       reset();
       return success;
     }
+
+    #if HAS_BED_PROBE
+      constexpr float dpo[] = NOZZLE_TO_PROBE_OFFSET;
+      static_assert(COUNT(dpo) == 3, "NOZZLE_TO_PROBE_OFFSET must contain offsets for X, Y, and Z.");
+      #if HAS_PROBE_XY_OFFSET
+        LOOP_XYZ(a) probe.offset[a] = dpo[a];
+      #else
+        probe.offset.set(0, 0, dpo[Z_AXIS]);
+      #endif
+    #endif
+
     reset();
     #if ENABLED(EEPROM_AUTO_INIT)
       (void)save();
@@ -2559,16 +2570,6 @@ void MarlinSettings::reset() {
   //
   TERN_(ENABLE_LEVELING_FADE_HEIGHT, new_z_fade_height = 0.0);
   TERN_(HAS_LEVELING, reset_bed_level());
-
-  #if HAS_BED_PROBE && false
-    constexpr float dpo[] = NOZZLE_TO_PROBE_OFFSET;
-    static_assert(COUNT(dpo) == 3, "NOZZLE_TO_PROBE_OFFSET must contain offsets for X, Y, and Z.");
-    #if HAS_PROBE_XY_OFFSET
-      LOOP_XYZ(a) probe.offset[a] = dpo[a];
-    #else
-      probe.offset.set(0, 0, dpo[Z_AXIS]);
-    #endif
-  #endif
 
   //
   // Z Stepper Auto-alignment points
