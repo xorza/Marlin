@@ -744,12 +744,12 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 
-#define  X_MICROSTEPS           8        // 0..256
-#define  Y_MICROSTEPS           8
-#define  Z_MICROSTEPS           8
-#define E0_MICROSTEPS           8
-#define  X_DEGREES_PER_STEP     1.8
-#define  Y_DEGREES_PER_STEP     1.8
+#define  X_MICROSTEPS           16        // 0..256
+#define  Y_MICROSTEPS           16
+#define E0_MICROSTEPS           16
+#define  Z_MICROSTEPS           16
+#define  X_DEGREES_PER_STEP     0.9
+#define  Y_DEGREES_PER_STEP     0.9
 #define  Z_DEGREES_PER_STEP     1.8
 #define E0_DEGREES_PER_STEP     1.8
 #define  X_DEGREES_PER_UNIT    11.25
@@ -1052,7 +1052,7 @@
  */
 #define Z_CLEARANCE_DEPLOY_PROBE      3 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES    3 // Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     0.5 // Z Clearance between multiple probes
+#define Z_CLEARANCE_MULTI_PROBE     1.0 // Z Clearance between multiple probes
 #define Z_AFTER_PROBING              20 // Z position after probing is done
 
 #define Z_PROBE_LOW_POINT            -2 // Farthest distance below the trigger-point to go before stopping
@@ -1109,7 +1109,7 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR true
+#define INVERT_X_DIR false
 #define INVERT_Y_DIR false
 #define INVERT_Z_DIR true
 
