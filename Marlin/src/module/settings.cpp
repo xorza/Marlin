@@ -2485,6 +2485,7 @@ void MarlinSettings::reset() {
 
   #if HAS_JUNCTION_DEVIATION
     planner.junction_deviation_mm = float(JUNCTION_DEVIATION_MM);
+    planner.junction_deviation_travel_mm = float(JUNCTION_DEVIATION_TRAVEL_MM);
   #endif
 
   #if HAS_SCARA_OFFSET
