@@ -744,25 +744,12 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 
-#define  X_MICROSTEPS           4        // 0..256
-#define  Y_MICROSTEPS           4
-#define  Z_MICROSTEPS           8
-#define E0_MICROSTEPS           4
-#define  X_DEGREES_PER_STEP     0.9
-#define  Y_DEGREES_PER_STEP     0.9
-#define  Z_DEGREES_PER_STEP     1.8
-#define E0_DEGREES_PER_STEP     1.8
-#define  X_DEGREES_PER_UNIT    11.25
-#define  Y_DEGREES_PER_UNIT    11.25
-#define  Z_DEGREES_PER_UNIT    45.0
-#define E0_DEGREES_PER_UNIT    46.6875
+// #define  X_DEGREES_PER_UNIT    11.25
+// #define  Y_DEGREES_PER_UNIT    11.25
+// #define  Z_DEGREES_PER_UNIT    45.0
+// #define E0_DEGREES_PER_UNIT    46.8
 
-#define DEFAULT_AXIS_MICROSTEPS_PER_UNIT { \
-  X_MICROSTEPS * X_DEGREES_PER_UNIT / X_DEGREES_PER_STEP, \
-  Y_MICROSTEPS * Y_DEGREES_PER_UNIT / Y_DEGREES_PER_STEP, \
-  Z_MICROSTEPS * Z_DEGREES_PER_UNIT / Z_DEGREES_PER_STEP, \
-  E0_MICROSTEPS * E0_DEGREES_PER_UNIT / E0_DEGREES_PER_STEP, \
-}
+#define DEFAULT_AXIS_MICROSTEPS_PER_UNIT { 100, 100, 400, 415 }
 
 
 
@@ -771,11 +758,11 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 200, 120, 20, 50 }
+#define DEFAULT_MAX_FEEDRATE          { 200, 200, 20, 50 }
 
 #define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 200, 120, 20, 50 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    { 200, 200, 20, 50 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -1111,7 +1098,7 @@
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
 #define INVERT_X_DIR false
-#define INVERT_Y_DIR false
+#define INVERT_Y_DIR true
 #define INVERT_Z_DIR true
 
 // @section extruder
