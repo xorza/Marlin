@@ -758,11 +758,11 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 200, 120, 20, 30 }
+#define DEFAULT_MAX_FEEDRATE          { 200, 120, 20, 50 }
 
 #define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 200, 120, 20, 30 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    { 200, 120, 20, 50 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -823,7 +823,7 @@
  */
 #if DISABLED(CLASSIC_JERK)
   #define JUNCTION_DEVIATION_MM         0.05 // (mm) Distance from real junction edge
-  #define JUNCTION_DEVIATION_TRAVEL_MM  0.2   // (mm) Distance from real junction edge
+  #define JUNCTION_DEVIATION_TRAVEL_MM  0.10 // (mm) Distance from real junction edge
   #define JD_HANDLE_SMALL_SEGMENTS            // Use curvature estimation instead of just the junction angle
                                               // for small segments (< 1mm) with large junction angles (> 135°).
 #endif
