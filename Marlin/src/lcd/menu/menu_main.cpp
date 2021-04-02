@@ -234,16 +234,16 @@ void menu_main() {
     #endif
   #endif
 
-  #if ENABLED(ADVANCED_PAUSE_FEATURE)
-    #if E_STEPPERS == 1 && DISABLED(FILAMENT_LOAD_UNLOAD_GCODES)
-      if (thermalManager.targetHotEnoughToExtrude(active_extruder))
-        GCODES_ITEM(MSG_FILAMENTCHANGE, PSTR("M600 B0"));
-      else
-        SUBMENU(MSG_FILAMENTCHANGE, []{ _menu_temp_filament_op(PAUSE_MODE_CHANGE_FILAMENT, 0); });
-    #else
-      SUBMENU(MSG_FILAMENTCHANGE, menu_change_filament);
-    #endif
-  #endif
+  // #if ENABLED(ADVANCED_PAUSE_FEATURE)
+  //   #if E_STEPPERS == 1 && DISABLED(FILAMENT_LOAD_UNLOAD_GCODES)
+  //     if (thermalManager.targetHotEnoughToExtrude(active_extruder))
+  //       GCODES_ITEM(MSG_FILAMENTCHANGE, PSTR("M600 B0"));
+  //     else
+  //       SUBMENU(MSG_FILAMENTCHANGE, []{ _menu_temp_filament_op(PAUSE_MODE_CHANGE_FILAMENT, 0); });
+  //   #else
+  //     SUBMENU(MSG_FILAMENTCHANGE, menu_change_filament);
+  //   #endif
+  // #endif
 
   #if ENABLED(LCD_INFO_MENU)
     SUBMENU(MSG_INFO_MENU, menu_info);
