@@ -194,13 +194,13 @@ void menu_temperature() {
     DEFINE_SINGLENOZZLE_ITEM();
 
     #if HAS_FAN0
-      _FAN_EDIT_ITEMS(0,FIRST_FAN_SPEED);
+      _FAN_EDIT_ITEMS(0, FIRST_FAN_SPEED);
     #endif
-    #if HAS_FAN1
-      FAN_EDIT_ITEMS(1);
-    #elif SNFAN(1)
-      singlenozzle_item(1);
-    #endif
+    // #if HAS_FAN1
+    //   FAN_EDIT_ITEMS(1);
+    // #elif SNFAN(1)
+    //   singlenozzle_item(1);
+    // #endif
     #if HAS_FAN2
       FAN_EDIT_ITEMS(2);
     #elif SNFAN(2)
