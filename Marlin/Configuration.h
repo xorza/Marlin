@@ -1525,15 +1525,20 @@
 #define PREHEAT_2_TEMP_BED          70
 #define PREHEAT_2_FAN_SPEED          0 // Value from 0 to 255
 
-#define PREHEAT_3_LABEL         "NYLON"
-#define PREHEAT_3_TEMP_HOTEND       280
-#define PREHEAT_3_TEMP_BED           70
-#define PREHEAT_3_FAN_SPEED           0 // Value from 0 to 255
+#define PREHEAT_3_LABEL          "ABS"
+#define PREHEAT_3_TEMP_HOTEND      265
+#define PREHEAT_3_TEMP_BED         100
+#define PREHEAT_3_FAN_SPEED          0 // Value from 0 to 255
 
 #define PREHEAT_4_LABEL           "TPU"
 #define PREHEAT_4_TEMP_HOTEND       235
 #define PREHEAT_4_TEMP_BED           70
 #define PREHEAT_4_FAN_SPEED           0 // Value from 0 to 255
+
+#define PREHEAT_5_LABEL         "NYLON"
+#define PREHEAT_5_TEMP_HOTEND       280
+#define PREHEAT_5_TEMP_BED           70
+#define PREHEAT_5_FAN_SPEED           0 // Value from 0 to 255
 
 /**
  * Nozzle Park
@@ -1550,7 +1555,7 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { ((X_MIN_POS + X_MAX_POS) / 2), (Y_MAX_POS - 10), Z_MAX_POS }
+  #define NOZZLE_PARK_POINT { ((X_MIN_POS + X_MAX_POS) / 2), (Y_MAX_POS - 10), 50 }
   //#define NOZZLE_PARK_X_ONLY          // X move only is required to park
   //#define NOZZLE_PARK_Y_ONLY          // Y move only is required to park
   #define NOZZLE_PARK_Z_RAISE_MIN   5   // (mm) Always raise Z by at least this distance
