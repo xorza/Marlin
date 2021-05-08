@@ -31,6 +31,11 @@
 
 #if ENABLED(AUTO_POWER_CONTROL)
   #include "../feature/power.h"
+  #include "../feature/hotend_idle.h"
+#endif
+
+#if ENABLED(HOTEND_IDLE_TIMEOUT)
+  #include "../feature/hotend_idle.h"
 #endif
 
 #if ENABLED(AUTO_REPORT_TEMPERATURES)

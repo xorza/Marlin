@@ -187,8 +187,14 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
 
 #if E_MANUAL
 
+  inline void _move_with_scale(const AxisEnum axis, const screenFunc_t func, const int8_t eindex, const float move_scale) {
+    _manual_move_func_ptr = func;
+
+    _goto_manual_move(move_scale);
+  }
+
   inline void _goto_menu_move_distance_e() {
-    ui.goto_screen([]{ _menu_move_distance(E_AXIS, []{ lcd_move_e(TERN_(MULTI_MANUAL, active_extruder)); }, -1); });
+    ui.goto_screen([]{ _move_with_scale(E_AXIS, []{ lcd_move_e(); }, -1, 5.0f); });
   }
 
   inline void _menu_move_distance_e_maybe() {
