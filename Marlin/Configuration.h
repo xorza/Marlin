@@ -1124,9 +1124,9 @@
 #define Z_CLEARANCE_DEPLOY_PROBE      3 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES    3 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     1.0 // Z Clearance between multiple probes
-#define Z_AFTER_PROBING              20 // Z position after probing is done
+#define Z_AFTER_PROBING              50 // Z position after probing is done
 
-#define Z_PROBE_LOW_POINT            -2 // Farthest distance below the trigger-point to go before stopping
+#define Z_PROBE_LOW_POINT            -1 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
 #define Z_PROBE_OFFSET_RANGE_MIN -4
@@ -1219,7 +1219,7 @@
 #define Z_HOMING_HEIGHT  4      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                   // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
 
-#define Z_AFTER_HOMING  20      // (mm) Height to move to after homing Z
+#define Z_AFTER_HOMING  50      // (mm) Height to move to after homing Z
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
@@ -1239,7 +1239,7 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 205
+#define Z_MAX_POS 210
 
 /**
  * Software Endstops
