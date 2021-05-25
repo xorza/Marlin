@@ -847,7 +847,7 @@ class Temperature {
     #endif
 
     #if ENABLED(PROBING_HEATERS_OFF)
-      static void pause(const bool p);
+      static void pause_heaters(const bool p);
     #endif
 
     #if HEATER_IDLE_HANDLER
