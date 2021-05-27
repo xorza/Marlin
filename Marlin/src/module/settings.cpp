@@ -2444,19 +2444,9 @@ void MarlinSettings::postprocess() {
     if (validate()) {
       const bool success = _load();
       TERN_(EXTENSIBLE_UI, ExtUI::onConfigurationStoreRead(success));
-      reset();
+      reset(false);
       return success;
     }
-
-    #if HAS_BED_PROBE
-      constexpr float dpo[] = NOZZLE_TO_PROBE_OFFSET;
-      static_assert(COUNT(dpo) == 3, "NOZZLE_TO_PROBE_OFFSET must contain offsets for X, Y, and Z.");
-      #if HAS_PROBE_XY_OFFSET
-        LOOP_LINEAR_AXES(a) probe.offset[a] = dpo[a];
-      #else
-        probe.offset.set(0, 0, dpo[Z_AXIS]);
-      #endif
-    #endif
 
     reset();
     #if ENABLED(EEPROM_AUTO_INIT)
@@ -2592,7 +2582,7 @@ void MarlinSettings::postprocess() {
 /**
  * M502 - Reset Configuration
  */
-void MarlinSettings::reset() {
+void MarlinSettings::reset(const bool reset_probe_offset) {
   LOOP_DISTINCT_AXES(i) {
     planner.settings.max_acceleration_mm_per_s2[i] = pgm_read_dword(&_DMA[ALIM(i, _DMA)]);
     planner.settings.axis_steps_per_mm[i] = pgm_read_float(&_DASU[ALIM(i, _DASU)]);
@@ -2714,15 +2704,17 @@ void MarlinSettings::reset() {
   TERN_(ENABLE_LEVELING_FADE_HEIGHT, new_z_fade_height = (DEFAULT_LEVELING_FADE_HEIGHT));
   TERN_(HAS_LEVELING, reset_bed_level());
 
-  #if HAS_BED_PROBE
-    constexpr float dpo[] = NOZZLE_TO_PROBE_OFFSET;
-    static_assert(COUNT(dpo) == 3, "NOZZLE_TO_PROBE_OFFSET must contain offsets for X, Y, and Z.");
-    #if HAS_PROBE_XY_OFFSET
-      LOOP_LINEAR_AXES(a) probe.offset[a] = dpo[a];
-    #else
-      probe.offset.set(0, 0, dpo[Z_AXIS]);
+  if(reset_probe_offset) {
+    #if HAS_BED_PROBE
+      constexpr float dpo[] = NOZZLE_TO_PROBE_OFFSET;
+      static_assert(COUNT(dpo) == 3, "NOZZLE_TO_PROBE_OFFSET must contain offsets for X, Y, and Z.");
+      #if HAS_PROBE_XY_OFFSET
+        LOOP_LINEAR_AXES(a) probe.offset[a] = dpo[a];
+      #else
+        probe.offset.set(0, 0, dpo[Z_AXIS]);
+      #endif
     #endif
-  #endif
+  }
 
   //
   // Z Stepper Auto-alignment points
