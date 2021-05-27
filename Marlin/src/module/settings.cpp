@@ -2704,8 +2704,8 @@ void MarlinSettings::reset(const bool reset_probe_offset) {
   TERN_(ENABLE_LEVELING_FADE_HEIGHT, new_z_fade_height = (DEFAULT_LEVELING_FADE_HEIGHT));
   TERN_(HAS_LEVELING, reset_bed_level());
 
-  if(reset_probe_offset) {
-    #if HAS_BED_PROBE
+  #if HAS_BED_PROBE
+    if (reset_probe_offset) {
       constexpr float dpo[] = NOZZLE_TO_PROBE_OFFSET;
       static_assert(COUNT(dpo) == 3, "NOZZLE_TO_PROBE_OFFSET must contain offsets for X, Y, and Z.");
       #if HAS_PROBE_XY_OFFSET
@@ -2713,8 +2713,8 @@ void MarlinSettings::reset(const bool reset_probe_offset) {
       #else
         probe.offset.set(0, 0, dpo[Z_AXIS]);
       #endif
-    #endif
-  }
+    }
+  #endif
 
   //
   // Z Stepper Auto-alignment points
