@@ -1299,7 +1299,12 @@
   //#define NO_SD_AUTOSTART                 // Remove auto#.g file support completely to save some Flash, SRAM
   //#define MENU_ADDAUTOSTART               // Add a menu option to run auto#.g files
 
-  #define EVENT_GCODE_SD_ABORT "G90\nG92 E0.0\nG1 E-25.0\nG92 E0.0\nG27 P2\nM84\n" SD_FINISHED_RELEASECOMMAND      // G-code to run on SD Abort Print (e.g., "G28XY" or "G27")
+  //#define BROWSE_MEDIA_ON_INSERT          // Open the file browser when media is inserted
+
+  //#define MEDIA_MENU_AT_TOP               // Force the media menu to be listed on the top of the main menu
+
+  // G-code to run on SD Abort Print (e.g., "G28XY" or "G27")
+  #define EVENT_GCODE_SD_ABORT G90\nG92 E0.0\nG1 E-25.0\nG92 E0.0\nG27 P2\nM84\n" SD_FINISHED_RELEASECOMMAND
 
   #if ENABLED(PRINTER_EVENT_LEDS)
     #define PE_LEDS_COMPLETED_TIME  (30*60) // (seconds) Time to keep the LED "done" color before restoring normal illumination
@@ -2111,9 +2116,6 @@
   // the host to signal the RX buffer is becoming full.
   //#define SERIAL_XON_XOFF
 #endif
-
-// Add M575 G-code to change the baud rate
-//#define BAUD_RATE_GCODE
 
 #if ENABLED(SDSUPPORT)
   // Enable this option to collect and display the maximum
