@@ -77,7 +77,6 @@ void menu_configuration();
 #endif
 
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
-  void _menu_temp_filament_op(const PauseMode, const int8_t);
   void menu_change_filament();
 #endif
 
@@ -317,6 +316,41 @@ void menu_main() {
       sdcard_menu_items();
     #endif
 
+  #if BOTH(HAS_ENCODER_WHEEL, SDSUPPORT)
+
+    if (!busy) {
+
+      // *** IF THIS SECTION IS CHANGED, REPRODUCE ABOVE ***
+
+      //
+      // Autostart
+      //
+      #if ENABLED(MENU_ADDAUTOSTART)
+        ACTION_ITEM(MSG_AUTOSTART, card.beginautostart);
+      #endif
+
+      if (card_detected) {
+        if (!card_open) {
+          #if PIN_EXISTS(SD_DETECT)
+            //GCODES_ITEM(MSG_CHANGE_MEDIA, M21_STR);
+          #else
+            //GCODES_ITEM(MSG_RELEASE_MEDIA, PSTR("M22"));
+          #endif
+          SUBMENU(MSG_MEDIA_MENU, TERN(PASSWORD_ON_SD_PRINT_MENU, password.media_gatekeeper, menu_media));
+        }
+      }
+      else {
+        #if PIN_EXISTS(SD_DETECT)
+          ACTION_ITEM(MSG_NO_MEDIA, nullptr);
+        #else
+          //GCODES_ITEM(MSG_ATTACH_MEDIA, M21_STR);
+        #endif
+      }
+    }
+
+  #endif // HAS_ENCODER_WHEEL && SDSUPPORT
+
+
     if (TERN0(MACHINE_CAN_PAUSE, printingIsPaused()))
       ACTION_ITEM(MSG_RESUME_PRINT, ui.resume_print);
 
@@ -351,7 +385,7 @@ void menu_main() {
     if (!busy) SUBMENU(MSG_MMU2_MENU, menu_mmu2);
   #endif
 
-  SUBMENU(MSG_CONFIGURATION, menu_configuration);
+  //SUBMENU(MSG_CONFIGURATION, menu_configuration);
 
   #if ENABLED(CUSTOM_MENU_MAIN)
     if (TERN1(CUSTOM_MENU_MAIN_ONLY_IDLE, !busy)) {
@@ -365,10 +399,10 @@ void menu_main() {
 
   #if ENABLED(ADVANCED_PAUSE_FEATURE)
     #if E_STEPPERS == 1 && DISABLED(FILAMENT_LOAD_UNLOAD_GCODES)
-      if (thermalManager.targetHotEnoughToExtrude(active_extruder))
-        GCODES_ITEM(MSG_FILAMENTCHANGE, PSTR("M600 B0"));
-      else
-        SUBMENU(MSG_FILAMENTCHANGE, []{ _menu_temp_filament_op(PAUSE_MODE_CHANGE_FILAMENT, 0); });
+      YESNO_ITEM(MSG_FILAMENTCHANGE,
+        menu_change_filament, ui.goto_previous_screen,
+        GET_TEXT(MSG_FILAMENTCHANGE), (const char *)nullptr, PSTR("?")
+      );
     #else
       SUBMENU(MSG_FILAMENTCHANGE, menu_change_filament);
     #endif
@@ -392,10 +426,10 @@ void menu_main() {
       GCODES_ITEM(MSG_SWITCH_PS_ON, PSTR("M80"));
   #endif
 
-  #if ENABLED(SDSUPPORT) && DISABLED(MEDIA_MENU_AT_TOP)
-    sdcard_menu_items();
-  #endif
 
+  //removed
+
+  
   #if HAS_SERVICE_INTERVALS
     static auto _service_reset = [](const int index) {
       print_job_timer.resetServiceInterval(index);

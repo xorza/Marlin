@@ -28,6 +28,7 @@
 #include "../../module/planner.h"
 #include "../../module/motion.h"
 #include "../../module/printcounter.h"
+#include "../../module/settings.h"
 #include "../../gcode/queue.h"
 
 #if HAS_BUZZER
@@ -50,9 +51,12 @@
 int8_t encoderTopLine, encoderLine, screen_items;
 
 typedef struct {
-  screenFunc_t menu_function;
-  uint32_t encoder_position;
-  int8_t top_line, items;
+  screenFunc_t menu_function;     // The screen's function
+  uint32_t encoder_position;      // The position of the encoder
+  int8_t top_line, items;         // The amount of scroll, and the number of items
+  #if SCREENS_CAN_TIME_OUT
+    bool sticky;                  // The screen is sticky
+  #endif
 } menuPosition;
 menuPosition screen_history[6];
 uint8_t screen_history_depth = 0;
@@ -75,9 +79,9 @@ bool         MenuEditItemBase::liveEdit;
 
 void MarlinUI::return_to_status() { goto_screen(status_screen); }
 
-void MarlinUI::save_previous_screen() {
+void MarlinUI::push_current_screen() {
   if (screen_history_depth < COUNT(screen_history))
-    screen_history[screen_history_depth++] = { currentScreen, encoderPosition, encoderTopLine, screen_items };
+    screen_history[screen_history_depth++] = { currentScreen, encoderPosition, encoderTopLine, screen_items OPTARG(SCREENS_CAN_TIME_OUT, screen_is_sticky()) };
 }
 
 void MarlinUI::_goto_previous_screen(TERN_(TURBO_BACK_MENU_ITEM, const bool is_back/*=false*/)) {
@@ -90,6 +94,7 @@ void MarlinUI::_goto_previous_screen(TERN_(TURBO_BACK_MENU_ITEM, const bool is_b
       is_back ? 0 : sh.top_line,
       sh.items
     );
+    defer_status_screen(TERN_(SCREENS_CAN_TIME_OUT, sh.sticky));
   }
   else
     return_to_status();
@@ -147,7 +152,7 @@ void MenuEditItemBase::goto_edit_screen(
 ) {
   TERN_(HAS_TOUCH_BUTTONS, ui.on_edit_screen = true);
   ui.screen_changed = true;
-  ui.save_previous_screen();
+  ui.push_current_screen();
   ui.refresh();
   editLabel = el;
   editValue = ev;
@@ -237,7 +242,7 @@ void MarlinUI::goto_screen(screenFunc_t screen, const uint16_t encoder/*=0*/, co
 //
 void MarlinUI::synchronize(PGM_P const msg/*=nullptr*/) {
   static PGM_P sync_message = msg ?: GET_TEXT(MSG_MOVING);
-  save_previous_screen();
+  push_current_screen();
   goto_screen([]{
     if (should_draw()) MenuItem_static::draw(LCD_HEIGHT >= 4, sync_message);
   });
@@ -301,7 +306,10 @@ void scroll_screen(const uint8_t limit, const bool is_menu) {
   #include "../../feature/babystep.h"
 
   void lcd_babystep_zoffset() {
-    if (ui.use_click()) return ui.goto_previous_screen_no_defer();
+    if (ui.use_click()) {
+      settings.save();
+      return ui.goto_previous_screen_no_defer();
+    }
     ui.defer_status_screen();
     const bool do_probe = DISABLED(BABYSTEP_HOTEND_Z_OFFSET) || active_extruder == 0;
     if (ui.encoderPosition) {
@@ -371,6 +379,7 @@ void MenuItem_confirm::select_screen(
   selectFunc_t yesFunc, selectFunc_t noFunc,
   PGM_P const pref, const char * const string/*=nullptr*/, PGM_P const suff/*=nullptr*/
 ) {
+  ui.defer_status_screen();
   const bool ui_selection = ui.update_selection(), got_click = ui.use_click();
   if (got_click || ui.should_draw()) {
     draw_select_screen(yes, no, ui_selection, pref, string, suff);
@@ -378,7 +387,6 @@ void MenuItem_confirm::select_screen(
       selectFunc_t callFunc = ui_selection ? yesFunc : noFunc;
       if (callFunc) callFunc(); else ui.goto_previous_screen();
     }
-    ui.defer_status_screen();
   }
 }
 

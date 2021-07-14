@@ -35,7 +35,7 @@ class MarlinSettings {
   public:
     static uint16_t datasize();
 
-    static void reset();
+    static void reset(const bool reset_probe_offset = true);
     static bool save();    // Return 'true' if data was saved
 
     FORCE_INLINE static bool init_eeprom() {

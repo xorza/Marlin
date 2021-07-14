@@ -55,15 +55,27 @@ inline PGM_P _change_filament_command() {
 }
 
 // Initiate Filament Load/Unload/Change at the specified temperature
-static void _change_filament_with_temp(const uint16_t celsius) {
+static void _change_filament_with_temp(const uint16_t celsius_e, const uint16_t celsius_hb) {
+  thermalManager.setTargetHotend(celsius_e, _change_filament_extruder);
+  thermalManager.setTargetBed(celsius_hb);
+
   char cmd[11];
   sprintf_P(cmd, _change_filament_command(), _change_filament_extruder);
-  thermalManager.setTargetHotend(celsius, _change_filament_extruder);
   queue.inject(cmd);
 }
 
+// Initiate Filament Load/Unload/Change at the specified temperature
+static void _change_filament_with_temp(const uint16_t celsius_e) {
+  thermalManager.setTargetHotend(celsius_e, _change_filament_extruder);
+    
+  char cmd[11];
+  sprintf_P(cmd, _change_filament_command(), _change_filament_extruder);
+  queue.inject(cmd);
+}
+
+
 static void _change_filament_with_preset() {
-  _change_filament_with_temp(ui.material_preset[MenuItemBase::itemIndex].hotend_temp);
+  _change_filament_with_temp(ui.material_preset[MenuItemBase::itemIndex].hotend_temp, ui.material_preset[MenuItemBase::itemIndex].bed_temp);
 }
 
 static void _change_filament_with_custom() {
@@ -106,10 +118,11 @@ void _menu_temp_filament_op(const PauseMode mode, const int8_t extruder) {
  * "Change Filament" submenu
  */
 #if E_STEPPERS > 1 || ENABLED(FILAMENT_LOAD_UNLOAD_GCODES)
-
   bool printingIsPaused();
+#endif
 
-  void menu_change_filament() {
+void menu_change_filament() {
+  #if E_STEPPERS > 1 || ENABLED(FILAMENT_LOAD_UNLOAD_GCODES)
     // Say "filament change" when no print is active
     editable.int8 = printingIsPaused() ? PAUSE_MODE_PAUSE_PRINT : PAUSE_MODE_CHANGE_FILAMENT;
 
@@ -204,8 +217,16 @@ void _menu_temp_filament_op(const PauseMode mode, const int8_t extruder) {
     #endif
 
     END_MENU();
-  }
-#endif
+
+  #else
+
+    if (thermalManager.targetHotEnoughToExtrude(active_extruder))
+      queue.inject_P(PSTR("M600B0"));
+    else
+      _menu_temp_filament_op(PAUSE_MODE_CHANGE_FILAMENT, 0);
+
+  #endif
+}
 
 static uint8_t hotend_status_extruder = 0;
 
@@ -240,18 +261,22 @@ void menu_pause_option() {
   #if LCD_HEIGHT > 2
     STATIC_ITEM(MSG_FILAMENT_CHANGE_OPTION_HEADER);
   #endif
-  ACTION_ITEM(MSG_FILAMENT_CHANGE_OPTION_PURGE, []{ pause_menu_response = PAUSE_RESPONSE_EXTRUDE_MORE; });
 
   #if HAS_FILAMENT_SENSOR
     const bool still_out = runout.filament_ran_out;
-    if (still_out)
-      EDIT_ITEM(bool, MSG_RUNOUT_SENSOR, &runout.enabled, runout.reset);
   #else
     constexpr bool still_out = false;
   #endif
 
   if (!still_out)
     ACTION_ITEM(MSG_FILAMENT_CHANGE_OPTION_RESUME, []{ pause_menu_response = PAUSE_RESPONSE_RESUME_PRINT; });
+
+  ACTION_ITEM(MSG_FILAMENT_CHANGE_OPTION_PURGE, []{ pause_menu_response = PAUSE_RESPONSE_EXTRUDE_MORE; });
+
+  #if HAS_FILAMENT_SENSOR
+    if (still_out)
+      EDIT_ITEM(bool, MSG_RUNOUT_SENSOR, &runout.enabled, runout.reset);
+  #endif
 
   END_MENU();
 }

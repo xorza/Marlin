@@ -44,6 +44,7 @@ void GcodeSuite::M501() {
  */
 void GcodeSuite::M502() {
   (void)settings.reset();
+  GcodeSuite::M500();
 }
 
 #if DISABLED(DISABLE_M503)
